@@ -100,7 +100,7 @@ public class ExcelExportService extends BaseExportService {
                 cellIndex = createHeaderRow(title, sheet, workbook, rows == 1 ? index : index + 1, entity.getList(), cellIndex);
                 List<ExcelExportEntity> sTitel = entity.getList();
                 if (StringUtils.isNotBlank(entity.getName()) && sTitel.size() > 1) {
-                    PoiMergeCellUtil.addMergedRegion(sheet, index, index, tempCellIndex, tempCellIndex + sTitel.size() - 1);
+                    PoiMergeCellUtil.addMergedRegion(sheet, index, index, tempCellIndex, tempCellIndex + getFieldLength(sTitel));
                 }
                 /*for (int j = 0, size = sTitel.size(); j < size; j++) {
 
