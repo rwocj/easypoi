@@ -48,6 +48,7 @@ public final class PoiElUtil {
     public static final String EMPTY              = "";
     public static final String CONST              = "'";
     public static final String NULL               = "&NULL&";
+    public static final String INDEX               = "&INDEX&";
     public static final String LEFT_BRACKET       = "(";
     public static final String RIGHT_BRACKET      = ")";
     public static final String CAL                = "cal:";

@@ -1,6 +1,7 @@
 package cn.afterturn.easypoi.excel.entity.params;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 import java.io.Serializable;
@@ -51,7 +52,9 @@ public class ExcelForEachParams implements Serializable {
      * 行合并
      */
     private              boolean       collectCell;
-
+    /**
+     * 需要统计
+     */
     private              boolean       needSum;
 
     public ExcelForEachParams() {
@@ -72,4 +75,9 @@ public class ExcelForEachParams implements Serializable {
     }
 
 
+    public void addConstValue(int num) {
+        if (StringUtils.isNotEmpty(constValue)) {
+            this.constValue = Integer.parseInt(constValue) + 1 + "";
+        }
+    }
 }

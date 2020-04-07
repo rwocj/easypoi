@@ -1,9 +1,6 @@
 package cn.afterturn.easypoi.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ReflectPermission;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,10 +20,11 @@ public final class PoiReflectorUtil {
 
     private static final Map<Class<?>, PoiReflectorUtil> CACHE_REFLECTOR = new ConcurrentHashMap<Class<?>, PoiReflectorUtil>();
 
-    private Map<String, Method> getMethods = new HashMap<String, Method>();
-    private Map<String, Method> setMethods = new HashMap<String, Method>();
-    private Map<String, Method> enumMethods = new HashMap<String, Method>();
-    private List<Field> fieldList = new ArrayList<Field>();
+    private Map<String, Method> getMethods = new HashMap<>();
+    private Map<String, Method> setMethods = new HashMap<>();
+    private Map<String, Method> enumMethods = new HashMap<>();
+    private Map<String, Field> publicField = new HashMap<>();
+    private List<Field> fieldList = new ArrayList<>();
 
     private Class<?> type;
 
@@ -203,6 +201,9 @@ public final class PoiReflectorUtil {
             if (field.isAccessible() && !"serialVersionUID".equalsIgnoreCase(field.getName())) {
                 this.fieldList.add(field);
             }
+            if (Modifier.isPublic(field.getModifiers())) {
+                this.publicField.put(field.getName(),field);
+            }
         }
         if (clazz.getSuperclass() != null) {
             addFields(clazz.getSuperclass());
@@ -297,6 +298,12 @@ public final class PoiReflectorUtil {
     }
 
     public Method getGetMethod(String propertyName) {
+        if (publicField.get(propertyName) != null){
+            try {
+                return this.getClass().getMethod("publicField",Void.class);
+            } catch (NoSuchMethodException e) {
+            }
+        }
         Method method = getMethods.get(propertyName);
         if (method == null) {
             throw new RuntimeException(
@@ -330,6 +337,13 @@ public final class PoiReflectorUtil {
             } catch (Exception ex) {
             }
         }
+        if (publicField.get(property) != null){
+            try {
+                value = publicField.get(property).get(obj);
+            } catch (IllegalAccessException e) {
+
+            }
+        }
         return value;
     }
 
@@ -342,6 +356,14 @@ public final class PoiReflectorUtil {
      * @return
      */
     public boolean setValue(Object obj, String property, Object object) {
+        if (publicField.get(property) != null){
+            try {
+                publicField.get(property).set(obj, object);
+                return true;
+            } catch (IllegalAccessException e) {
+
+            }
+        }
         Method m = setMethods.get(property);
         if (m != null) {
             try {
@@ -377,4 +399,6 @@ public final class PoiReflectorUtil {
             throw new RuntimeException(e);
         }
     }
+
+    public void publicField(){}
 }

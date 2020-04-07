@@ -60,7 +60,6 @@ public final class CsvExportUtil {
      * @param pojoClass Excel对象Class
      */
     public static IWriter<Void> exportCsv(CsvExportParams params, Class<?> pojoClass, OutputStream outputStream) {
-        CsvExportUtil ce = new CsvExportUtil();
         return new CsvExportService(outputStream, params, pojoClass);
     }
 

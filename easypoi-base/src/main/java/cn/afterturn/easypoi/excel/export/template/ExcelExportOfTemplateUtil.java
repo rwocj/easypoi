@@ -134,17 +134,18 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
                 .replace(FOREACH, EMPTY).replace(START_STR, EMPTY);
         String[]      keys  = name.replaceAll("\\s{1,}", " ").trim().split(" ");
         Collection<?> datas = (Collection<?>) PoiPublicUtil.getParamsValue(keys[0], map);
-        Object[] columnsInfo = getAllDataColumns(cell, name.replace(keys[0], EMPTY),
-                mergedRegionHelper);
         if (datas == null) {
             return;
         }
+        Object[] columnsInfo = getAllDataColumns(cell, name.replace(keys[0], EMPTY),
+                mergedRegionHelper);
         Iterator<?> its     = datas.iterator();
         int         rowspan = (Integer) columnsInfo[0], colspan = (Integer) columnsInfo[1];
         @SuppressWarnings("unchecked")
         List<ExcelForEachParams> columns = (List<ExcelForEachParams>) columnsInfo[2];
-        Row row      = null;
-        int rowIndex = cell.getRow().getRowNum() + 1;
+        Row                row         = null;
+        int                rowIndex    = cell.getRow().getRowNum() + 1;
+        ExcelForEachParams indexColumn = getIndexColumn(columns);
         //处理当前行
         int loopSize = 0;
         if (its.hasNext()) {
@@ -165,10 +166,21 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
         while (its.hasNext()) {
             Object t = its.next();
             row = createRow(rowIndex, cell.getSheet(), isCreate, rowspan);
+            indexColumn.addConstValue(1);
             loopSize = setForeachRowCellValue(isCreate, row, cell.getColumnIndex(), t, columns, map, rowspan,
                     colspan, mergedRegionHelper)[0];
             rowIndex += rowspan + loopSize - 1;
         }
+    }
+
+    private ExcelForEachParams getIndexColumn(List<ExcelForEachParams> columns) {
+        for (int i = 0; i < columns.size(); i++) {
+            if (INDEX.equals(columns.get(i).getConstValue())) {
+                columns.get(i).setConstValue("1");
+                return columns.get(i);
+            }
+        }
+        return new ExcelForEachParams();
     }
 
     /**
@@ -1020,6 +1032,11 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
         if (NULL.equals(name)) {
             params.setName(null);
             params.setConstValue(EMPTY);
+        }
+        //是否是当前索引
+        if (INDEX.equals(name)) {
+            params.setName(null);
+            params.setConstValue(INDEX);
         }
         //获取合并单元格的数据
         if (mergedRegionHelper.isMergedRegion(cell.getRowIndex() + 1, cell.getColumnIndex())) {
