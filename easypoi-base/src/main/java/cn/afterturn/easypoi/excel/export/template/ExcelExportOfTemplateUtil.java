@@ -747,12 +747,17 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
                 //如果合并单元格,就把这个单元格的样式和之前的保持一致
                 setMergedRegionStyle(row, ci, params);
                 //合并对应单元格
-                if ((params.getRowspan() != 1 || params.getColspan() != 1)
-                        && !mergedRegionHelper.isMergedRegion(row.getRowNum() + 1, ci)
-                        && PoiCellUtil.isMergedRegion(row.getSheet(), row.getRowNum(), ci)) {
+                boolean isNeedMerge = (params.getRowspan() != 1 || params.getColspan() != 1)
+                        && !mergedRegionHelper.isMergedRegion(row.getRowNum() + 1, ci);
+                // 这里感觉判断没有意义,有点浪费性能,还不如后面报错
+                //        && !PoiCellUtil.isMergedRegion(row.getSheet(), row.getRowNum(), ci);
+                if (isNeedMerge) {
                     PoiMergeCellUtil.addMergedRegion(row.getSheet(), row.getRowNum(),
                             row.getRowNum() + params.getRowspan() - 1, ci,
                             ci + params.getColspan() - 1);
+                }
+                if (params.getRowspan() == 1 && params.getColspan() == 1){
+                    row.getCell(ci).getSheet().setColumnWidth(row.getCell(ci).getColumnIndex(), params.getWidth());
                 }
                 ci = ci + params.getColspan();
             }
@@ -1046,6 +1051,7 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
             params.setColspan(colAndrow[1]);
         }
         params.setNeedSum(templateSumHandler.isSumKey(params.getName()));
+        params.setWidth(cell.getSheet().getColumnWidth(cell.getColumnIndex()));
         return params;
     }
 

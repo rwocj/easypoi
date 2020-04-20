@@ -37,6 +37,10 @@ public class ExcelForEachParams implements Serializable {
      */
     private              short         height;
     /**
+     * 列宽(仅横向遍历支持)
+     */
+    private              int           width;
+    /**
      * 常量值
      */
     private              String        constValue;
