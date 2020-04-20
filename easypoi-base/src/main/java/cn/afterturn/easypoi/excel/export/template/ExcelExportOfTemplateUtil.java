@@ -589,6 +589,18 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
                 isI18n = true;
                 oldString = oldString.replaceFirst(I18N_HANDLER, "");
             }
+            if (isHasSymbol(oldString, MERGE)) {
+                String mergeStr = PoiPublicUtil.getElStr(oldString,MERGE);
+                oldString = oldString.replace(mergeStr, "");
+                mergeStr = mergeStr.replaceFirst(MERGE, "");
+                try {
+                    int colSpan = (int)Double.parseDouble(PoiPublicUtil.getRealValue(mergeStr, map).toString());
+                    PoiMergeCellUtil.addMergedRegion(cell.getSheet(), cell.getRowIndex(),
+                            cell.getRowIndex() , cell.getColumnIndex(), cell.getColumnIndex() + colSpan - 1);
+                } catch (Exception e) {
+                    LOGGER.error(e.getMessage(),e);
+                }
+            }
             Object obj = PoiPublicUtil.getRealValue(oldString, map);
             if (isDict) {
                 obj = dictHandler.toName(dict, null, oldString, obj);

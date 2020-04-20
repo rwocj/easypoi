@@ -40,6 +40,7 @@ public final class PoiElUtil {
     public static final String END_STR            = "}}";
     public static final String WRAP               = "]]";
     public static final String NUMBER_SYMBOL      = "n:";
+    public static final String MERGE              = "merge:";
     public static final String STYLE_SELF         = "sy:";
     public static final String FORMAT_DATE        = "fd:";
     public static final String FORMAT_NUMBER      = "fn:";
@@ -48,7 +49,7 @@ public final class PoiElUtil {
     public static final String EMPTY              = "";
     public static final String CONST              = "'";
     public static final String NULL               = "&NULL&";
-    public static final String INDEX               = "&INDEX&";
+    public static final String INDEX              = "&INDEX&";
     public static final String LEFT_BRACKET       = "(";
     public static final String RIGHT_BRACKET      = ")";
     public static final String CAL                = "cal:";

@@ -485,4 +485,18 @@ public final class PoiPublicUtil {
         String[] paramsArr = name.split("\\.");
         return paramsArr[paramsArr.length - 1];
     }
+
+    /**
+     * 找到字符串中包含key的{{字符串返回}}
+     *
+     * @param str
+     * @param key
+     * @return
+     */
+    public static String getElStr(String str, String key) {
+        int keyIndex   = str.indexOf(key);
+        int startIndex = (str.substring(0, keyIndex)).lastIndexOf(START_STR);
+        int endIndex   = str.indexOf(END_STR, keyIndex) + 2;
+        return str.substring(startIndex, endIndex);
+    }
 }
