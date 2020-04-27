@@ -71,7 +71,11 @@ public class ExcelBaseEntity {
     /**
      * 时区
      */
-    private String      timezone;
+    private String       timezone;
+    /**
+     * 是否插入下拉
+     */
+    private boolean      addressList;
 
     private List<Method> methods;
 

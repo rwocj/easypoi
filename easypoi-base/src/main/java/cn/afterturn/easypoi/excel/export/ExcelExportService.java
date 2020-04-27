@@ -29,6 +29,7 @@ import cn.afterturn.easypoi.util.PoiPublicUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -240,6 +241,7 @@ public class ExcelExportService extends BaseExportService {
             setColumnHidden(excelParams, sheet);
             short rowHeight = entity.getHeight() != 0 ? entity.getHeight() : getRowHeight(excelParams);
             setCurrentIndex(1);
+            createAddressList(sheet, index, excelParams, 0);
             Iterator<?>  its      = dataSet.iterator();
             List<Object> tempList = new ArrayList<Object>();
             while (its.hasNext()) {
@@ -277,6 +279,47 @@ public class ExcelExportService extends BaseExportService {
             LOGGER.error(e.getMessage(), e);
             throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
         }
+    }
+
+    /**
+     * 插入下拉
+     *
+     * @param sheet
+     * @param index
+     * @param excelParams
+     */
+    private int createAddressList(Sheet sheet, int index, List<ExcelExportEntity> excelParams, int cellIndex) {
+        for (int i = 0; i < excelParams.size(); i++) {
+            if (excelParams.get(i).isAddressList()) {
+                ExcelExportEntity entity = excelParams.get(i);
+                CellRangeAddressList regions = new CellRangeAddressList(index,
+                        this.type.equals(ExcelType.XSSF) ? 1000000 : 65535, cellIndex, cellIndex);
+                sheet.addValidationData(sheet.getDataValidationHelper().createValidation(sheet.getDataValidationHelper().createExplicitListConstraint(getAddressListValues(entity)), regions));
+            }
+            if (excelParams.get(i).getList() != null) {
+                cellIndex = createAddressList(sheet, index, excelParams.get(i).getList(), cellIndex);
+            } else {
+                cellIndex++;
+            }
+        }
+        return cellIndex;
+    }
+
+    private String[] getAddressListValues(ExcelExportEntity entity) {
+        if (StringUtils.isNotEmpty(entity.getDict())) {
+            String[] arr = new String[this.dictHandler.getList(entity.getDict()).size()];
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = this.dictHandler.getList(entity.getDict()).get(i).get("dictValue").toString();
+            }
+            return arr;
+        } else if (entity.getReplace() != null && entity.getReplace().length > 0) {
+            String[] arr = new String[entity.getReplace().length];
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = entity.getReplace()[i].split("_")[0];
+            }
+            return arr;
+        }
+        throw new ExcelExportException(entity.getName() + "没有可以创建下来的数据,请addressList不要设置为true");
     }
 
 

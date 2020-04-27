@@ -120,6 +120,11 @@ public @interface Excel {
     public String dict() default  "";
 
     /**
+     * 下拉列表,仅支持replace和dict,dict优先
+     * @return
+     */
+    public boolean addressList() default false;
+    /**
      * 导入路径,如果是图片可以填写,默认是upload/className/ IconEntity这个类对应的就是upload/Icon/
      *
      */

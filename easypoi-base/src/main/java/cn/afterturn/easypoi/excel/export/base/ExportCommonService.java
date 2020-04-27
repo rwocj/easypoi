@@ -274,6 +274,7 @@ public class ExportCommonService {
         excelEntity.setDict(excel.dict());
         excelEntity.setEnumExportField(excel.enumExportField());
         excelEntity.setTimezone(excel.timezone());
+        excelEntity.setAddressList(excel.addressList());
         if (excelGroup != null) {
             excelEntity.setGroupName(PoiPublicUtil.getValueByTargetId(excelGroup.name(), targetId, null));
         } else {

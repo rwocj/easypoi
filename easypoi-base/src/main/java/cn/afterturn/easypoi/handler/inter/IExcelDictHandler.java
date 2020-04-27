@@ -1,10 +1,24 @@
 package cn.afterturn.easypoi.handler.inter;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author jueyue on 18-2-2.
  * @version 3.0.4
  */
 public interface IExcelDictHandler {
+
+    /**
+     * 返回字典所有值
+     * key: dictKey
+     * value: dictValue
+     * @param dict  字典Key
+     * @return
+     */
+    default public List<Map> getList(String dict) {
+        return null;
+    }
 
     /**
      * 从值翻译到名称
