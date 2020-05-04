@@ -156,8 +156,8 @@ public class ExcelImportService extends ImportBaseService {
                                     ImportParams params,
                                     Map<String, PictureData> pictures) throws Exception {
         List                           collection      = new ArrayList();
-        Map<String, ExcelImportEntity> excelParams     = new HashMap<String, ExcelImportEntity>();
-        List<ExcelCollectionParams>    excelCollection = new ArrayList<ExcelCollectionParams>();
+        Map<String, ExcelImportEntity> excelParams     = new HashMap<>();
+        List<ExcelCollectionParams>    excelCollection = new ArrayList<>();
         String                         targetId        = null;
         i18nHandler = params.getI18nHandler();
         boolean isMap = Map.class.equals(pojoClass);
@@ -482,7 +482,7 @@ public class ExcelImportService extends ImportBaseService {
                         importResult.setWorkbook(removeSuperfluousRows(successBook, failRow, params));
                         importResult.setFailWorkbook(removeSuperfluousRows(book, successRow, params));
                     } else {
-                        importResult.setWorkbook(successBook);
+                        importResult.setWorkbook(book);
                     }
                     importResult.setFailList(failCollection);
                     importResult.setVerifyFail(verifyFail);

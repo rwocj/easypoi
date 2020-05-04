@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * poi 4.0 07版本在 shift操作下有bug,不移动了单元格以及单元格样式,没有移动cell
- * cell还是复用的原理的cell,导致wb输出的时候没有输出值
+ * poi 4.0 07版本在 shift操作下有bug,只移动了单元格以及单元格样式,没有移动cell
+ * cell还是复用的原来的cell,导致wb输出的时候没有输出值
  * 等待修复的时候删除这个问题
  *
  * @author by jueyue on 19-6-17.
