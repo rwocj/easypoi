@@ -7,9 +7,10 @@
     <packaging>pom</packaging>
     <name>easypoi</name>
     <modules>
+        <module>easypoi-annotation</module>
         <module>easypoi-base</module>
         <module>easypoi-web</module>
-        <module>easypoi-annotation</module>
+        <module>easypoi-wps</module>
     </modules>
 
     <url>http://opensource.afterturn.cn/</url>
@@ -50,7 +51,7 @@
         <xerces.version>2.9.1</xerces.version>
         <guava.version>16.0.1</guava.version>
         <commons-lang.version>3.2.1</commons-lang.version>
-        <slf4j.version>1.6.1</slf4j.version>
+        <slf4j.version>1.7.26</slf4j.version>
         <spring.version>5.1.7.RELEASE</spring.version>
     </properties>
     <dependencyManagement>
