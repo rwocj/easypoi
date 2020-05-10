@@ -18,7 +18,7 @@ import java.util.Map;
  * @author jueyue on 20-5-7.
  */
 @RestController
-@RequestMapping("v1/3rd/file")
+@RequestMapping("easypoi/wps/v1/3rd/file")
 public class EasyPoiFileController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiFileController.class);
