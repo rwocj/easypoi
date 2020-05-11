@@ -55,7 +55,7 @@ public class SheetHandler extends DefaultHandler {
     private int curCol = 0;
 
     private CellValueType type;
-    private String        currentLocation, prevLocation;
+    private String        currentLocation = "A_", prevLocation;
 
     private ISaxRowRead read;
 
@@ -74,8 +74,13 @@ public class SheetHandler extends DefaultHandler {
         lastContents = "";
         if (COL.equals(name)) {
             String cellType = attributes.getValue(TYPE);
-            prevLocation = currentLocation;
-            currentLocation = attributes.getValue(ROW_COL);
+            if ("A_".equalsIgnoreCase(currentLocation)) {
+                currentLocation = attributes.getValue(ROW_COL);
+                prevLocation = "A" + getRowCell(currentLocation)[1];
+            } else {
+                prevLocation = currentLocation;
+                currentLocation = attributes.getValue(ROW_COL);
+            }
             if (STRING.equals(cellType)) {
                 type = CellValueType.String;
                 return;
@@ -135,8 +140,9 @@ public class SheetHandler extends DefaultHandler {
             } catch (Exception e) {
             }
         }
-        if (VALUE.equals(name) && StringUtils.isNotEmpty(prevLocation)) {
+        if ((COL.equals(name) || VALUE.equals(name)) && StringUtils.isNotEmpty(prevLocation)) {
             addNullCell(prevLocation, currentLocation);
+            prevLocation = currentLocation;
         }
         //t元素也包含字符串
         if (CellValueType.TElement.equals(type)) {
@@ -168,6 +174,7 @@ public class SheetHandler extends DefaultHandler {
             rowList.clear();
             curRow++;
             curCol = 0;
+            currentLocation = "A_";
         }
 
     }
