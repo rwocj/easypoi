@@ -105,13 +105,6 @@ public class MergedRegionHelper {
     public void shiftRows(Sheet sheet, int rowIndex, int size, int shiftRows) {
         Set<String> keys = new HashSet<String>();
         keys.addAll(mergedCache.keySet());
-        //删除掉原始的缓存KEY
-        for (String key : keys) {
-            String[] temp = key.split("_");
-            if (Integer.parseInt(temp[0]) >= rowIndex + size && Integer.parseInt(temp[0]) <= rowIndex + size + shiftRows) {
-                mergedCache.remove(key);
-            }
-        }
         for (String key : keys) {
             String[] temp = key.split("_");
             if (Integer.parseInt(temp[0]) >= rowIndex) {
@@ -130,6 +123,13 @@ public class MergedRegionHelper {
                     } catch (Exception e) {
                     }
                 }
+            }
+        }
+        //删除掉原始的缓存KEY
+        for (String key : keys) {
+            String[] temp = key.split("_");
+            if (Integer.parseInt(temp[0]) >= rowIndex + size && Integer.parseInt(temp[0]) <= rowIndex + size + shiftRows) {
+                mergedCache.remove(key);
             }
         }
     }
