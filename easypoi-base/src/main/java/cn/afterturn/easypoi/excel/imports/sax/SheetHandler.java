@@ -44,6 +44,7 @@ public class SheetHandler extends DefaultHandler {
     private SharedStringsTable sharedStringsTable;
     private StylesTable        stylesTable;
     private String             lastContents;
+    private boolean            lastContentObtained;
 
     /**
      * 当前行
@@ -72,6 +73,7 @@ public class SheetHandler extends DefaultHandler {
                              Attributes attributes) throws SAXException {
         // 置空  
         lastContents = "";
+        lastContentObtained = false;
         if (COL.equals(name)) {
             String cellType = attributes.getValue(TYPE);
             if ("A_".equalsIgnoreCase(currentLocation)) {
@@ -148,6 +150,7 @@ public class SheetHandler extends DefaultHandler {
         if (CellValueType.TElement.equals(type)) {
             String value = lastContents.trim();
             rowList.add(curCol, new SaxReadCellEntity(CellValueType.String, value));
+            lastContentObtained = true;
             curCol++;
             type = CellValueType.None;
             // v => 单元格的值，如果单元格是字符串则v标签的值为该字符串在SST中的索引  
@@ -158,15 +161,18 @@ public class SheetHandler extends DefaultHandler {
             if (CellValueType.Date.equals(type)) {
                 Date date = HSSFDateUtil.getJavaDate(Double.valueOf(value));
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.Date, date));
+                lastContentObtained = true;
             } else if (CellValueType.Number.equals(type)) {
                 BigDecimal bd = new BigDecimal(value);
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.Number, bd));
+                lastContentObtained = true;
             } else if (CellValueType.String.equals(type) || CellValueType.InlineStr.equals(type)) {
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.String, value));
+                lastContentObtained = true;
             }
             curCol++;
             //如果标签名称为 row ，这说明已到行尾，调用 optRows() 方法
-        } else if (COL.equals(name) && StringUtils.isEmpty(lastContents)) {
+        } else if (COL.equals(name) && !lastContentObtained) {
             rowList.add(curCol, new SaxReadCellEntity(CellValueType.String, ""));
             curCol++;
         } else if (ROW.equals(name)) {
