@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jueyue on 20-5-8.
  */
 @RestController
-@RequestMapping("v1/3rd/file")
+@RequestMapping("easypoi/wps/v1/3rd/file")
 public class EasyPoiUserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiUserController.class);

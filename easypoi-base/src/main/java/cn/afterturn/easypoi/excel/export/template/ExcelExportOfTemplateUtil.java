@@ -175,7 +175,7 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
 
     private ExcelForEachParams getIndexColumn(List<ExcelForEachParams> columns) {
         for (int i = 0; i < columns.size(); i++) {
-            if (INDEX.equals(columns.get(i).getConstValue())) {
+            if (columns.get(i) != null && INDEX.equals(columns.get(i).getConstValue())) {
                 columns.get(i).setConstValue("1");
                 return columns.get(i);
             }
