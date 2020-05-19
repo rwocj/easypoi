@@ -166,7 +166,7 @@ public class SheetHandler extends DefaultHandler {
                 BigDecimal bd = new BigDecimal(value);
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.Number, bd));
                 lastContentObtained = true;
-            } else if (CellValueType.String.equals(type) || CellValueType.InlineStr.equals(type)) {
+            } else if (CellValueType.String.equals(type) || CellValueType.Formula.equals(type) || CellValueType.InlineStr.equals(type)) {
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.String, value));
                 lastContentObtained = true;
             }
