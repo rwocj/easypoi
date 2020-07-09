@@ -21,7 +21,7 @@ public class PoiWordStyleUtil {
     public static void copyCellAndSetValue(XWPFTableCell tmpCell, XWPFTableCell cell, String text) throws Exception {
         CTTc cttc2 = tmpCell.getCTTc();
         CTTcPr ctPr2 = cttc2.getTcPr();
-
+        cell.getTableRow().setHeight(tmpCell.getTableRow().getHeight());
         CTTc cttc = cell.getCTTc();
         CTTcPr ctPr = cttc.addNewTcPr();
         if (tmpCell.getColor() != null) {

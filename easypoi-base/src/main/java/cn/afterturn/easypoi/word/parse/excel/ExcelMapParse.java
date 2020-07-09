@@ -14,6 +14,7 @@
 package cn.afterturn.easypoi.word.parse.excel;
 
 import cn.afterturn.easypoi.entity.ImageEntity;
+import cn.afterturn.easypoi.excel.entity.params.ExcelForEachParams;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import cn.afterturn.easypoi.util.PoiWordStyleUtil;
 import cn.afterturn.easypoi.word.entity.MyXWPFDocument;
@@ -22,6 +23,7 @@ import org.apache.poi.xwpf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +87,34 @@ public final class ExcelMapParse {
     }
 
     /**
+     * 解析参数行,获取参数列表
+     *
+     * @param currentRow
+     * @return
+     * @author JueYue
+     * 2013-11-18
+     */
+    private static List<ExcelForEachParams> parseCurrentRowGetParamsEntity(XWPFTableRow currentRow) {
+        List<XWPFTableCell>      cells  = currentRow.getTableCells();
+        List<ExcelForEachParams> params = new ArrayList<>();
+        String                   text;
+        for (int i = 0; i < cells.size(); i++) {
+            ExcelForEachParams param = new ExcelForEachParams();
+            text = cells.get(i).getText();
+            param.setName(text == null ? ""
+                    : text.trim().replace(START_STR, EMPTY).replace(END_STR, EMPTY));
+            if (cells.get(i).getCTTc().getTcPr().getGridSpan() != null) {
+                if (cells.get(i).getCTTc().getTcPr().getGridSpan().getVal() != null) {
+                    param.setColspan(cells.get(i).getCTTc().getTcPr().getGridSpan().getVal().intValue());
+                }
+            }
+            param.setHeight((short) currentRow.getHeight());
+            params.add(param);
+        }
+        return params;
+    }
+
+    /**
      * 解析下一行,并且生成更多的行
      *
      * @param table
@@ -94,15 +124,16 @@ public final class ExcelMapParse {
     public static void parseNextRowAndAddRow(XWPFTable table, int index,
                                              List<Object> list) throws Exception {
         XWPFTableRow currentRow = table.getRow(index);
-        String[]     params     = parseCurrentRowGetParams(currentRow);
-        String       listname   = params[0];
-        boolean      isCreate   = !listname.contains(FOREACH_NOT_CREATE);
+        //String[]                 params     = parseCurrentRowGetParams(currentRow);
+        List<ExcelForEachParams> paramsList = parseCurrentRowGetParamsEntity(currentRow);
+        String                   listname   = paramsList.get(0).getName();
+        boolean                  isCreate   = !listname.contains(FOREACH_NOT_CREATE);
         listname = listname.replace(FOREACH_NOT_CREATE, EMPTY).replace(FOREACH_AND_SHIFT, EMPTY)
                 .replace(FOREACH, EMPTY).replace(START_STR, EMPTY);
         String[] keys = listname.replaceAll("\\s{1,}", " ").trim().split(" ");
-        params[0] = keys[1];
+        paramsList.get(0).setName(keys[1]);
         //保存这一行的样式是-后面好统一设置
-        List<XWPFTableCell> tempCellList = new ArrayList<XWPFTableCell>();
+        List<XWPFTableCell> tempCellList = new ArrayList<>();
         tempCellList.addAll(table.getRow(index).getTableCells());
         int                 cellIndex = 0;
         Map<String, Object> tempMap   = Maps.newHashMap();
@@ -111,16 +142,20 @@ public final class ExcelMapParse {
             currentRow = isCreate ? table.insertNewTableRow(index++) : table.getRow(index++);
             tempMap.put("t", obj);
             for (cellIndex = 0; cellIndex < currentRow.getTableCells().size(); cellIndex++) {
-                String val = eval(params[cellIndex], tempMap).toString();
+                String val = eval(paramsList.get(cellIndex).getName(), tempMap).toString();
                 clearParagraphText(currentRow.getTableCells().get(cellIndex).getParagraphs());
                 PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
                         currentRow.getTableCells().get(cellIndex), val);
             }
 
-            for (; cellIndex < params.length; cellIndex++) {
-                String val = eval(params[cellIndex], tempMap).toString();
+            for (; cellIndex < paramsList.size(); cellIndex++) {
+                String        val  = eval(paramsList.get(cellIndex).getName(), tempMap).toString();
+                XWPFTableCell cell = currentRow.createCell();
+                if (paramsList.get(cellIndex).getColspan() > 1) {
+                    cell.getCTTc().addNewTcPr().addNewGridSpan().setVal(new BigInteger(paramsList.get(cellIndex).getColspan() + ""));
+                }
                 PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
-                        currentRow.createCell(), val);
+                        cell, val);
             }
         }
         table.removeRow(index);
