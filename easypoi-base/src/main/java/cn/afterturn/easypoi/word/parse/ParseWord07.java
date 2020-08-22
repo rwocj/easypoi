@@ -52,15 +52,31 @@ public class ParseWord07 {
      */
     private void changeValues(XWPFParagraph paragraph, XWPFRun currentRun, String currentText,
                               List<Integer> runIndex, Map<String, Object> map) throws Exception {
-        Object obj = PoiPublicUtil.getRealValue(currentText, map);
-        // 如果是图片就设置为图片
-        if (obj instanceof ImageEntity) {
-            currentRun.setText("", 0);
-            ExcelMapParse.addAnImage((ImageEntity) obj, currentRun);
+        // 判断是不是迭代输出
+        if (currentText.contains(FOREACH) && currentText.startsWith(START_STR)) {
+            currentText = currentText.replace(FOREACH, EMPTY).replace(START_STR, EMPTY).replace(END_STR, EMPTY);
+            String[] keys   = currentText.replaceAll("\\s{1,}", " ").trim().split(" ");
+            List   list = (List)PoiPublicUtil.getParamsValue(keys[0], map);
+            list.forEach(obj -> {
+                if (obj instanceof ImageEntity) {
+                    currentRun.setText("", 0);
+                    ExcelMapParse.addAnImage((ImageEntity) obj, currentRun);
+                } else {
+                    PoiPublicUtil.setWordText(currentRun, obj.toString());
+                }
+            });
         } else {
-            currentText = obj.toString();
-            PoiPublicUtil.setWordText(currentRun, currentText);
+            Object obj = PoiPublicUtil.getRealValue(currentText, map);
+            // 如果是图片就设置为图片
+            if (obj instanceof ImageEntity) {
+                currentRun.setText("", 0);
+                ExcelMapParse.addAnImage((ImageEntity) obj, currentRun);
+            } else {
+                currentText = obj.toString();
+                PoiPublicUtil.setWordText(currentRun, currentText);
+            }
         }
+
         for (int k = 0; k < runIndex.size(); k++) {
             paragraph.getRuns().get(runIndex.get(k)).setText("", 0);
         }

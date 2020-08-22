@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -71,6 +68,10 @@ public class PdfExportServer extends ExportCommonService {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    public PdfExportServer() {
+
     }
 
     /**
@@ -335,4 +336,7 @@ public class PdfExportServer extends ExportCommonService {
 
     }
 
+    public Document parsePdf(String url, Map<String, Object> map) {
+        return null;
+    }
 }

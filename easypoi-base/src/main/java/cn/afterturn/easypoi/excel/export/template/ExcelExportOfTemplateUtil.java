@@ -680,7 +680,7 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
         ExcelForEachParams params;
         int                loopSize = 1;
         int                loopCi   = 1;
-        row = row.getSheet().getRow(row.getRowNum() - rowspan + 1);
+        //row = row.getSheet().getRow(row.getRowNum() - rowspan + 1);
         for (int k = 0; k < rowspan; k++) {
             int ci = columnIndex;
             row.setHeight(getMaxHeight(k, colspan, columns));

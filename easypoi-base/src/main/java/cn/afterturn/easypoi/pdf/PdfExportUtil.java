@@ -20,11 +20,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import cn.afterturn.easypoi.word.parse.ParseWord07;
 import com.itextpdf.text.Document;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.pdf.entity.PdfExportParams;
 import cn.afterturn.easypoi.pdf.export.PdfExportServer;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
  * PDF 导出工具类
@@ -64,6 +66,19 @@ public class PdfExportUtil {
 
         return new PdfExportServer(outStream, entity).createPdfByExportEntity(entity, entityList,
             dataSet);
+    }
+
+    /**
+     * 解析PDF版本
+     *
+     * @param url
+     *            模板地址
+     * @param map
+     *            解析数据源
+     * @return
+     */
+    public static Document exportPdf(String url, Map<String, Object> map) throws Exception {
+        return new PdfExportServer().parsePdf(url, map);
     }
 
 }

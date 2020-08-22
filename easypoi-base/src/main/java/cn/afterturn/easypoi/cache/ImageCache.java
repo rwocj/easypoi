@@ -47,11 +47,11 @@ public class ImageCache {
             while ((ch = is.read()) != -1) {
                 swapStream.write(ch);
             }
-            Image         image     = Toolkit.getDefaultToolkit().createImage(swapStream.toByteArray());
-            BufferedImage bufferImg = toBufferedImage(image);
-            ImageIO.write(bufferImg,
-                    imagePath.substring(imagePath.lastIndexOf(".") + 1, imagePath.length()),
-                    byteArrayOut);
+//            Image         image     = Toolkit.getDefaultToolkit().createImage(swapStream.toByteArray());
+//            BufferedImage bufferImg = toBufferedImage(image);
+//            ImageIO.write(bufferImg,
+//                    imagePath.substring(imagePath.lastIndexOf(".") + 1, imagePath.length()),
+//                    byteArrayOut);
             return byteArrayOut.toByteArray();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

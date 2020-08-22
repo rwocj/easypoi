@@ -321,11 +321,10 @@ public final class PoiPublicUtil {
         String   type;
         if (entity.getType().equals(ImageEntity.URL)) {
             result[0] = ImageCache.getImage(entity.getUrl());
-            type = entity.getUrl().split("/.")[entity.getUrl().split("/.").length - 1];
         } else {
             result[0] = entity.getData();
-            type = PoiPublicUtil.getFileExtendName(entity.getData());
         }
+        type = PoiPublicUtil.getFileExtendName((byte[])result[0]);
         result[1] = getImageType(type);
         return result;
     }

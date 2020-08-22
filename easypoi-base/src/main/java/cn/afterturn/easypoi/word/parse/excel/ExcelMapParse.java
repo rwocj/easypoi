@@ -66,6 +66,13 @@ public final class ExcelMapParse {
 
     }
 
+
+    private static void addAnImage(ImageEntity obj, XWPFTableCell cell) {
+        List<XWPFParagraph> paragraphs = cell.getParagraphs();
+        XWPFParagraph newPara = paragraphs.get(0);
+        XWPFRun imageCellRun = newPara.createRun();
+        addAnImage(obj,imageCellRun);
+    }
     /**
      * 解析参数行,获取参数列表
      *
@@ -142,20 +149,28 @@ public final class ExcelMapParse {
             currentRow = isCreate ? table.insertNewTableRow(index++) : table.getRow(index++);
             tempMap.put("t", obj);
             for (cellIndex = 0; cellIndex < currentRow.getTableCells().size(); cellIndex++) {
-                String val = eval(paramsList.get(cellIndex).getName(), tempMap).toString();
+                Object val = eval(paramsList.get(cellIndex).getName(), tempMap);
                 clearParagraphText(currentRow.getTableCells().get(cellIndex).getParagraphs());
-                PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
-                        currentRow.getTableCells().get(cellIndex), val);
+                if (val instanceof ImageEntity) {
+                    addAnImage((ImageEntity)val,tempCellList.get(cellIndex));
+                } else {
+                    PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
+                            currentRow.getTableCells().get(cellIndex), val.toString());
+                }
             }
 
             for (; cellIndex < paramsList.size(); cellIndex++) {
-                String        val  = eval(paramsList.get(cellIndex).getName(), tempMap).toString();
+                Object        val  = eval(paramsList.get(cellIndex).getName(), tempMap);
                 XWPFTableCell cell = currentRow.createCell();
                 if (paramsList.get(cellIndex).getColspan() > 1) {
                     cell.getCTTc().addNewTcPr().addNewGridSpan().setVal(new BigInteger(paramsList.get(cellIndex).getColspan() + ""));
                 }
-                PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
-                        cell, val);
+                if (val instanceof ImageEntity) {
+                    addAnImage((ImageEntity)val,cell);
+                } else {
+                    PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
+                            cell, val.toString());
+                }
             }
         }
         table.removeRow(index);
