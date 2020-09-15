@@ -41,10 +41,10 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- PDF -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
-			<artifactId>itextpdf</artifactId>
+			<artifactId>itext7-core</artifactId>
+			<type>pom</type>
 			<optional>true</optional>
 		</dependency>
 

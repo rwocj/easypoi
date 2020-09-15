@@ -40,7 +40,6 @@ public class ImageCache {
 
     public static byte[] getImage(String imagePath) {
         InputStream                 is           = POICacheManager.getFile(imagePath);
-        ByteArrayOutputStream       byteArrayOut = new ByteArrayOutputStream();
         final ByteArrayOutputStream swapStream   = new ByteArrayOutputStream();
         try {
             int ch;
@@ -52,14 +51,13 @@ public class ImageCache {
 //            ImageIO.write(bufferImg,
 //                    imagePath.substring(imagePath.lastIndexOf(".") + 1, imagePath.length()),
 //                    byteArrayOut);
-            return byteArrayOut.toByteArray();
+            return swapStream.toByteArray();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         } finally {
             IOUtils.closeQuietly(is);
             IOUtils.closeQuietly(swapStream);
-            IOUtils.closeQuietly(byteArrayOut);
         }
 
     }

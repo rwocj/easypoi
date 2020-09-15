@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -17,14 +17,19 @@ package cn.afterturn.easypoi.entity;
 
 /**
  * word导出,图片设置和图片信息
- * 
+ *
  * @author JueYue
  *  2017-9-15
  * @version 3.0.1
  */
 public class ImageEntity {
 
+    public static int EMBED  = 0;
+    public static int ABOVE  = 1;
+    public static int BEHIND  = 2;
+
     public static String URL  = "url";
+
     public static String Data = "data";
     /**
      * 图片输入方式
@@ -43,7 +48,13 @@ public class ImageEntity {
 
     private int          rowspan = 1;
     private int          colspan = 1;
-
+    /**
+     * 图片方式
+     * EMBED 围绕
+     * ABOVE 浮于上方
+     * BEHIND 浮于下方
+     */
+    private int          locationType = ImageEntity.EMBED;
 
     public ImageEntity() {
 
@@ -116,5 +127,13 @@ public class ImageEntity {
 
     public void setColspan(int colspan) {
         this.colspan = colspan;
+    }
+
+    public int getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(int locationType) {
+        this.locationType = locationType;
     }
 }

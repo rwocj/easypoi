@@ -55,10 +55,23 @@ public final class ExcelMapParse {
             String   picId;
             picId = currentRun.getDocument().addPictureData((byte[]) isAndType[0],
                     (Integer) isAndType[1]);
-            ((MyXWPFDocument) currentRun.getDocument()).createPicture(currentRun,
-                    picId, currentRun.getDocument()
-                            .getNextPicNameNumber((Integer) isAndType[1]),
-                    obj.getWidth(), obj.getHeight());
+            if (obj.getLocationType() == ImageEntity.EMBED) {
+                ((MyXWPFDocument) currentRun.getDocument()).createPicture(currentRun,
+                        picId, currentRun.getDocument()
+                                .getNextPicNameNumber((Integer) isAndType[1]),
+                        obj.getWidth(), obj.getHeight());
+            } else if (obj.getLocationType() == ImageEntity.ABOVE) {
+                ((MyXWPFDocument) currentRun.getDocument()).createPicture(currentRun,
+                        picId, currentRun.getDocument()
+                                .getNextPicNameNumber((Integer) isAndType[1]),
+                        obj.getWidth(), obj.getHeight(), false);
+            }  else if (obj.getLocationType() == ImageEntity.BEHIND) {
+                ((MyXWPFDocument) currentRun.getDocument()).createPicture(currentRun,
+                        picId, currentRun.getDocument()
+                                .getNextPicNameNumber((Integer) isAndType[1]),
+                        obj.getWidth(), obj.getHeight(), true);
+            }
+
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

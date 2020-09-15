@@ -153,7 +153,9 @@ public final class ExcelExportUtil {
         Workbook workbook = getWorkbook(type, 0);
         for (Map<String, Object> map : list) {
             ExcelExportService service = new ExcelExportService();
-            service.createSheet(workbook, (ExportParams) map.get("title"),
+            ExportParams params = (ExportParams) map.get("title");
+            params.setType(type);
+            service.createSheet(workbook,params,
                     (Class<?>) map.get("entity"), (Collection<?>) map.get("data"));
         }
         return workbook;

@@ -114,8 +114,8 @@ public class ParseWord07 {
      * @author JueYue
      * 2013-11-17
      */
-    private void parseAllParagraphic(List<XWPFParagraph> paragraphs,
-                                     Map<String, Object> map) throws Exception {
+    private void parseAllParagraph(List<XWPFParagraph> paragraphs,
+                                   Map<String, Object> map) throws Exception {
         XWPFParagraph paragraph;
         for (int i = 0; i < paragraphs.size(); i++) {
             paragraph = paragraphs.get(i);
@@ -183,7 +183,7 @@ public class ParseWord07 {
 
     private void parseThisRow(List<XWPFTableCell> cells, Map<String, Object> map) throws Exception {
         for (XWPFTableCell cell : cells) {
-            parseAllParagraphic(cell.getParagraphs(), map);
+            parseAllParagraph(cell.getParagraphs(), map);
         }
     }
 
@@ -272,7 +272,7 @@ public class ParseWord07 {
 
     private void parseWordSetValue(MyXWPFDocument doc, Map<String, Object> map) throws Exception {
         // 第一步解析文档
-        parseAllParagraphic(doc.getParagraphs(), map);
+        parseAllParagraph(doc.getParagraphs(), map);
         // 第二步解析页眉,页脚
         parseHeaderAndFoot(doc, map);
         // 第三步解析所有表格
