@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
@@ -125,8 +126,15 @@ public abstract class BaseExportService extends ExportCommonService {
                     margeCellNum += entity.getList().size();
                 } else if (entity.isNeedMerge() && maxHeight > 1) {
                     for (int i = index + 1; i < index + maxHeight; i++) {
+                        if (sheet instanceof SXSSFSheet && i <= ((SXSSFSheet) sheet).getLastFlushedRowNum()) {
+                            continue;
+                        }
                         if (sheet.getRow(i) == null) {
-                            sheet.createRow(i);
+                            try {
+                                sheet.createRow(i);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         sheet.getRow(i).createCell(margeCellNum);
                         sheet.getRow(i).getCell(margeCellNum).setCellStyle(getStyles(false, entity));
