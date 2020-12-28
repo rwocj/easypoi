@@ -128,7 +128,7 @@ public class ExcelBatchExportService extends ExcelExportService implements IWrit
             setCurrentIndex(1);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 
