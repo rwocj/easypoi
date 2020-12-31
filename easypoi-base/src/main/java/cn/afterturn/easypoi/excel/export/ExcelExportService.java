@@ -176,7 +176,7 @@ public class ExcelExportService extends BaseExportService {
             createSheetForMap(workbook, entity, excelParams, dataSet);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 
@@ -277,7 +277,7 @@ public class ExcelExportService extends BaseExportService {
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 

@@ -57,7 +57,7 @@ public class CsvExportService extends BaseExportService implements IWriter<Void>
             createCsvOfList(outputStream, params, excelParams);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 
@@ -95,7 +95,7 @@ public class CsvExportService extends BaseExportService implements IWriter<Void>
             return this;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 
@@ -174,7 +174,7 @@ public class CsvExportService extends BaseExportService implements IWriter<Void>
             return this;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e.getCause());
+            throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
     }
 
