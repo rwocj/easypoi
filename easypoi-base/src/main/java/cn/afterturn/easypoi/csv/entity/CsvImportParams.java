@@ -19,7 +19,7 @@ public class CsvImportParams extends ExcelBaseParams {
     /**
      * 分隔符
      */
-    private String spiltMark = ",";
+    private String spiltMark = ",(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
 
     /**
      * 字符串标识符
