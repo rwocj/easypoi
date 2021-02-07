@@ -50,7 +50,7 @@ public class HtmlToExcelService {
 
     //样式
     private static final List<ICssConvertToExcel> STYLE_APPLIERS = new LinkedList<ICssConvertToExcel>();
-    {
+    static {
         STYLE_APPLIERS.add(new AlignCssConvertImpl());
         STYLE_APPLIERS.add(new BackgroundCssConvertImpl());
         STYLE_APPLIERS.add(new BorderCssConverImpl());
@@ -59,7 +59,7 @@ public class HtmlToExcelService {
 
     //Cell 高宽
     private static final List<ICssConvertToExcel> SHEET_APPLIERS = new LinkedList<ICssConvertToExcel>();
-    {
+    static {
         SHEET_APPLIERS.add(new WidthCssConverImpl());
         SHEET_APPLIERS.add(new HeightCssConverImpl());
     }
