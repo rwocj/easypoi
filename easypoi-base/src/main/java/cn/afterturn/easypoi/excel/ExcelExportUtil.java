@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public final class ExcelExportUtil {
 
-    public static       int    USE_SXSSF_LIMIT = 100000;
+    public static       int    USE_SXSSF_LIMIT = 1000000;
     public static final String SHEET_NAME      = "sheetName";
 
     private ExcelExportUtil() {
@@ -120,10 +120,8 @@ public final class ExcelExportUtil {
     private static Workbook getWorkbook(ExcelType type, int size) {
         if (ExcelType.HSSF.equals(type)) {
             return new HSSFWorkbook();
-        } else if (size < USE_SXSSF_LIMIT) {
-            return new XSSFWorkbook();
         } else {
-            return new SXSSFWorkbook();
+            return new XSSFWorkbook();
         }
     }
 

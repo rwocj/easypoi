@@ -1,12 +1,14 @@
 package cn.afterturn.easypoi.csv.entity;
 
 import cn.afterturn.easypoi.excel.entity.ExcelBaseParams;
+import lombok.Data;
 
 /**
  * CSV 导入参数
  *
  * @author by jueyue on 18-10-3.
  */
+@Data
 public class CsvExportParams extends ExcelBaseParams {
 
     public static final String UTF8 = "utf-8";
@@ -52,59 +54,4 @@ public class CsvExportParams extends ExcelBaseParams {
         this.encoding = encoding;
     }
 
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public String getSpiltMark() {
-        return spiltMark;
-    }
-
-    public void setSpiltMark(String spiltMark) {
-        this.spiltMark = spiltMark;
-    }
-
-    public String getTextMark() {
-        return textMark;
-    }
-
-    public void setTextMark(String textMark) {
-        this.textMark = textMark;
-    }
-
-    public int getTitleRows() {
-        return titleRows;
-    }
-
-    public void setTitleRows(int titleRows) {
-        this.titleRows = titleRows;
-    }
-
-    public int getHeadRows() {
-        return headRows;
-    }
-
-    public void setHeadRows(int headRows) {
-        this.headRows = headRows;
-    }
-
-    public String[] getExclusions() {
-        return exclusions;
-    }
-
-    public void setExclusions(String[] exclusions) {
-        this.exclusions = exclusions;
-    }
-
-    public boolean isCreateHeadRows() {
-        return isCreateHeadRows;
-    }
-
-    public void setCreateHeadRows(boolean createHeadRows) {
-        isCreateHeadRows = createHeadRows;
-    }
 }

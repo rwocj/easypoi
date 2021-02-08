@@ -46,7 +46,7 @@ public abstract class BaseExportService extends ExportCommonService {
 
     private int currentIndex = 0;
 
-    protected ExcelType type = ExcelType.HSSF;
+    protected ExcelType type = ExcelType.XSSF;
 
     private Map<Integer, Double> statistics = new HashMap<Integer, Double>();
 
@@ -178,9 +178,12 @@ public abstract class BaseExportService extends ExportCommonService {
         Cell   cell  = row.createCell(i);
         byte[] value = null;
         if (entity.getExportImageType() != 1) {
-            value = (byte[]) (entity.getMethods() != null
-                    ? getFieldBySomeMethod(entity.getMethods(), obj)
-                    : entity.getMethod().invoke(obj, new Object[]{}));
+            if (entity.getMethods() == null && entity.getMethod() == null) {
+                value = (byte[])PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
+            } else {
+                value = (byte[])(entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
+                        : entity.getMethod().invoke(obj, new Object[]{}));
+            }
         }
         createImageCell(cell, 50 * entity.getHeight(), entity.getExportImageType() == 1 ? imagePath : null, value);
 
@@ -197,11 +200,12 @@ public abstract class BaseExportService extends ExportCommonService {
         }
         ClientAnchor anchor;
         if (type.equals(ExcelType.HSSF)) {
-            anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + 1),
-                    cell.getRow().getRowNum() + 1);
+            // x range 0-1023 y range 0-255
+            anchor = new HSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex()),
+                    cell.getRow().getRowNum());
         } else {
-            anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + 1),
-                    cell.getRow().getRowNum() + 1);
+            anchor = new XSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex()),
+                    cell.getRow().getRowNum());
         }
         if (StringUtils.isNotEmpty(imagePath)) {
             data = ImageCache.getImage(imagePath);
@@ -223,11 +227,11 @@ public abstract class BaseExportService extends ExportCommonService {
         }
         ClientAnchor anchor;
         if (type.equals(ExcelType.HSSF)) {
-            anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan),
-                    cell.getRow().getRowNum() + rowspan);
+            anchor = new HSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
+                    cell.getRow().getRowNum() + rowspan - 1);
         } else {
-            anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan),
-                    cell.getRow().getRowNum() + rowspan);
+            anchor = new XSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
+                    cell.getRow().getRowNum() + rowspan - 1);
         }
         if (StringUtils.isNotEmpty(imagePath)) {
             data = ImageCache.getImage(imagePath);
@@ -305,7 +309,6 @@ public abstract class BaseExportService extends ExportCommonService {
         Cell cell = row.createCell(index);
         if (style != null && style.getDataFormat() > 0 && style.getDataFormat() < 12) {
             cell.setCellValue(Double.parseDouble(text));
-            cell.setCellType(CellType.NUMERIC);
         } else {
             RichTextString rtext;
             if (type.equals(ExcelType.HSSF)) {

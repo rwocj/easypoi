@@ -17,6 +17,7 @@ package cn.afterturn.easypoi.pdf.entity;
 
 import cn.afterturn.easypoi.excel.entity.ExcelBaseParams;
 import cn.afterturn.easypoi.pdf.styler.IPdfExportStyler;
+import com.itextpdf.kernel.geom.PageSize;
 
 /**
  * PDF 导出参数设置
@@ -56,6 +57,8 @@ public class PdfExportParams extends ExcelBaseParams {
      * 是否添加需要需要
      */
     private String           indexName         = "序号";
+
+    private PageSize         pageSize           = PageSize.A4;
 
     private IPdfExportStyler styler;
 
@@ -136,4 +139,11 @@ public class PdfExportParams extends ExcelBaseParams {
         this.styler = styler;
     }
 
+    public PageSize getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(PageSize pageSize) {
+        this.pageSize = pageSize;
+    }
 }

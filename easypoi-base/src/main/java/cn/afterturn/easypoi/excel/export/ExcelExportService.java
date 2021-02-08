@@ -26,6 +26,7 @@ import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
 import cn.afterturn.easypoi.util.PoiExcelGraphDataUtil;
 import cn.afterturn.easypoi.util.PoiMergeCellUtil;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -33,6 +34,7 @@ import org.apache.poi.ss.util.CellRangeAddressList;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Excel导出服务
@@ -203,15 +205,39 @@ public class ExcelExportService extends BaseExportService {
             // 重复遍历,出现了重名现象,创建非指定的名称Sheet
             sheet = workbook.createSheet();
         }
-        if (entity.isReadonly()) {
-            sheet.protectSheet(UUID.randomUUID().toString());
-        }
         if (dataSet.getClass().getClass().getName().contains("Unmodifiable")) {
             List dataTemp = new ArrayList<>();
             dataTemp.addAll(dataSet);
             dataSet = dataTemp;
         }
         insertDataToSheet(workbook, entity, entityList, dataSet, sheet);
+        if (entity.isReadonly()) {
+            sheet.protectSheet(UUID.randomUUID().toString());
+        }
+        sheet.setForceFormulaRecalculation(true);
+        if (isAutoSize(entity, entityList)) {
+            for (int len = Math.max(sheet.getRow(0).getLastCellNum(), sheet.getRow(1).getLastCellNum()), i = 0; i < len; i++) {
+                sheet.autoSizeColumn(i, true);
+            }
+        }
+    }
+
+    private boolean isAutoSize(ExportParams entity, List<ExcelExportEntity> entityList) {
+        if (entity.isAutoSize()) {
+            return true;
+        }
+        AtomicBoolean autoSize = new AtomicBoolean(true);
+        entityList.forEach(e -> {
+            if (e.getWidth() != 10) {
+                autoSize.set(false);
+                return;
+            }
+            if (CollectionUtils.isNotEmpty(e.getList()) && !isAutoSize(entity, e.getList())) {
+                autoSize.set(false);
+                return;
+            }
+        });
+        return autoSize.get();
     }
 
     protected void insertDataToSheet(Workbook workbook, ExportParams entity,

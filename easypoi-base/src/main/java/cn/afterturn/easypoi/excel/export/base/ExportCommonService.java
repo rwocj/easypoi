@@ -26,6 +26,7 @@ import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
 import cn.afterturn.easypoi.handler.inter.IExcelDataHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelDictHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelI18nHandler;
+import cn.afterturn.easypoi.util.PoiDataDesensitizationUtil;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import cn.afterturn.easypoi.util.PoiReflectorUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -226,6 +227,9 @@ public class ExportCommonService {
         if (StringUtils.isNotEmpty(entity.getSuffix()) && value != null) {
             value = value + entity.getSuffix();
         }
+        if (StringUtils.isNotEmpty(entity.getDesensitizationRule()) && value != null) {
+            value = PoiDataDesensitizationUtil.desensitization(entity.getDesensitizationRule(), value);
+        }
         if (value != null && StringUtils.isNotEmpty(entity.getEnumExportField())) {
             value = PoiReflectorUtil.fromCache(value.getClass()).getValue(value, entity.getEnumExportField());
         }
@@ -275,6 +279,7 @@ public class ExportCommonService {
         excelEntity.setEnumExportField(excel.enumExportField());
         excelEntity.setTimezone(excel.timezone());
         excelEntity.setAddressList(excel.addressList());
+        excelEntity.setDesensitizationRule(excel.desensitizationRule());
         if (excelGroup != null) {
             excelEntity.setGroupName(PoiPublicUtil.getValueByTargetId(excelGroup.name(), targetId, null));
         } else {

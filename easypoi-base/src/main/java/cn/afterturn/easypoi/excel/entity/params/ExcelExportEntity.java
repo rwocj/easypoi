@@ -102,6 +102,10 @@ public class ExcelExportEntity extends ExcelBaseEntity implements Comparable<Exc
      * 枚举导出属性字段
      */
     private String                  enumExportField;
+    /**
+     * 脱敏规则
+     */
+    private String                  desensitizationRule;
 
     private List<ExcelExportEntity> list;
 

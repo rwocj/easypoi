@@ -187,27 +187,22 @@ public class ExcelImportService extends ImportBaseService {
         if (excelCollection.size() > 0 && params.getKeyIndex() == null) {
             params.setKeyIndex(0);
         }
+        int          endRow       = sheet.getLastRowNum() - params.getLastOfInvalidRow();
+        if (params.getReadRows() > 0) {
+            endRow = Math.min(params.getReadRows(), endRow);
+        }
         if (params.isConcurrentTask()) {
             ForkJoinPool forkJoinPool = new ForkJoinPool();
-            int          endRow       = sheet.getLastRowNum() - params.getLastOfInvalidRow();
-            if (params.getReadRows() > 0) {
-                endRow = params.getReadRows();
-            }
             ExcelImportForkJoinWork task           = new ExcelImportForkJoinWork(params.getStartRows() + params.getHeadRows() + params.getTitleRows(), endRow, sheet, params, pojoClass, this, targetId, titlemap, excelParams);
             ExcelImportResult       forkJoinResult = forkJoinPool.invoke(task);
             collection = forkJoinResult.getList();
             failCollection = forkJoinResult.getFailList();
         } else {
             StringBuilder errorMsg;
-            while (rows.hasNext()
-                    && (row == null
-                    || sheet.getLastRowNum() - row.getRowNum() > params.getLastOfInvalidRow())) {
-                if (params.getReadRows() > 0 && readRow > params.getReadRows()) {
-                    break;
-                }
+            while (rows.hasNext()) {
                 row = rows.next();
                 // Fix 如果row为无效行时候跳出
-                if (sheet.getLastRowNum() - row.getRowNum() < params.getLastOfInvalidRow()) {
+                if (row.getRowNum() > endRow) {
                     break;
                 }
                 /* 如果当前行的单元格都是无效的，那就继续下一行 */

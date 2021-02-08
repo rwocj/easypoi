@@ -184,6 +184,25 @@ public @interface Excel {
      * @return
      */
     public String enumImportMethod() default "";
+    /**
+     * 数据脱敏规则
+     * 规则1: 采用保留头和尾的方式,中间数据加星号
+     * 如: 身份证  6_4 则保留 370101********1234
+     *    手机号   3_4 则保留 131****1234
+     * 规则2: 采用确定隐藏字段的进行隐藏,优先保留头
+     * 如: 姓名   1,3 表示最大隐藏3位,最小一位
+     *          李 -->  *
+     *          李三 --> 李*
+     *          张全蛋  --> 张*蛋
+     *          李张全蛋 --> 李**蛋
+     *          尼古拉斯.李张全蛋 -> 尼古拉***张全蛋
+     * 规则3: 特殊符号后保留
+     * 如: 邮箱    1~@ 表示只保留第一位和@之后的字段
+     *        afterturn@wupaas.com -> a********@wupaas.com
+     * 复杂版本请使用接口
+     * {@link cn.afterturn.easypoi.handler.inter.IExcelDataHandler}
+     */
+    public String   desensitizationRule() default "";
 
 
 }

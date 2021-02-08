@@ -32,22 +32,22 @@ public class ExportParams extends ExcelBaseParams {
     /**
      * 表格名称
      */
-    private String title;
+    private String  title;
 
     /**
      * 表格名称
      */
-    private short titleHeight = 10;
+    private short   titleHeight = 10;
 
     /**
      * 第二行名称
      */
-    private String secondTitle;
+    private String   secondTitle;
 
     /**
      * 表格名称
      */
-    private short     secondTitleHeight = 8;
+    private short    secondTitleHeight = 8;
     /**
      * sheetName
      */
@@ -122,6 +122,10 @@ public class ExportParams extends ExcelBaseParams {
      * 只读
      */
     private boolean readonly = false;
+    /**
+     * 列宽自适应，如果没有设置width 也自适应宽度
+     */
+    private boolean autoSize = false;
 
     public ExportParams() {
 
