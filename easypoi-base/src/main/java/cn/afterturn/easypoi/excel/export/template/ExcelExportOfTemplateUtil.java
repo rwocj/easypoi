@@ -566,49 +566,9 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
         oldString = cell.getStringCellValue();
         if (oldString != null && oldString.indexOf(START_STR) != -1
                 && !oldString.contains(FOREACH)) {
-            // step 2. 判断是否含有解析函数
-            boolean isNumber = false;
-            if (isHasSymbol(oldString, NUMBER_SYMBOL)) {
-                isNumber = true;
-                oldString = oldString.replaceFirst(NUMBER_SYMBOL, "");
-            }
-            boolean isStyleBySelf = false;
-            if (isHasSymbol(oldString, STYLE_SELF)) {
-                isStyleBySelf = true;
-                oldString = oldString.replaceFirst(STYLE_SELF, "");
-            }
-            boolean isDict = false;
-            String  dict   = null;
-            if (isHasSymbol(oldString, DICT_HANDLER)) {
-                isDict = true;
-                dict = oldString.substring(oldString.indexOf(DICT_HANDLER) + 5).split(";")[0];
-                oldString = oldString.replaceFirst(DICT_HANDLER, "");
-            }
-            boolean isI18n = false;
-            if (isHasSymbol(oldString, I18N_HANDLER)) {
-                isI18n = true;
-                oldString = oldString.replaceFirst(I18N_HANDLER, "");
-            }
-            if (isHasSymbol(oldString, MERGE)) {
-                String mergeStr = PoiPublicUtil.getElStr(oldString,MERGE);
-                oldString = oldString.replace(mergeStr, "");
-                mergeStr = mergeStr.replaceFirst(MERGE, "");
-                try {
-                    int colSpan = (int)Double.parseDouble(PoiPublicUtil.getRealValue(mergeStr, map).toString());
-                    PoiMergeCellUtil.addMergedRegion(cell.getSheet(), cell.getRowIndex(),
-                            cell.getRowIndex() , cell.getColumnIndex(), cell.getColumnIndex() + colSpan - 1);
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(),e);
-                }
-            }
-            Object obj = PoiPublicUtil.getRealValue(oldString, map);
-            if (isDict) {
-                obj = dictHandler.toName(dict, null, oldString, obj);
-            }
-            if (isI18n) {
-                obj = i18nHandler.getLocaleName(obj.toString());
-            }
-            //如何是数值 类型,就按照数值类型进行设置// 如果是图片就设置为图片
+            boolean isNumber = isHasSymbol(oldString, NUMBER_SYMBOL);
+            Object obj = getValByHandler(oldString,map, cell);
+            //如何是数值 类型,就按照数值类型进行设置;如果是图片就设置为图片
             if (obj instanceof ImageEntity) {
                 ImageEntity img = (ImageEntity) obj;
                 cell.setCellValue("");
@@ -631,9 +591,71 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
 
     }
 
+    /**
+     * 根据模板解析函数获取值
+     * @param funStr
+     * @param map
+     * @return
+     */
+    private Object getValByHandler(String funStr,Map<String, Object> map, Cell cell) throws Exception {
+        // step 2. 判断是否含有解析函数
+        if (isHasSymbol(funStr, NUMBER_SYMBOL)) {
+            funStr = funStr.replaceFirst(NUMBER_SYMBOL, "");
+        }
+        boolean isStyleBySelf = false;
+        if (isHasSymbol(funStr, STYLE_SELF)) {
+            isStyleBySelf = true;
+            funStr = funStr.replaceFirst(STYLE_SELF, "");
+        }
+        boolean isDict = false;
+        String  dict   = null;
+        if (isHasSymbol(funStr, DICT_HANDLER)) {
+            isDict = true;
+            dict = funStr.substring(funStr.indexOf(DICT_HANDLER) + 5).split(";")[0];
+            funStr = funStr.replaceFirst(DICT_HANDLER, "");
+            funStr = funStr.replaceFirst(dict + ";", "");
+        }
+        boolean isI18n = false;
+        if (isHasSymbol(funStr, I18N_HANDLER)) {
+            isI18n = true;
+            funStr = funStr.replaceFirst(I18N_HANDLER, "");
+        }
+        boolean isDern = false;
+        String  dern   = null;
+        if (isHasSymbol(funStr, DESENSITIZATION_RULE)) {
+            isDern = true;
+            dern = funStr.substring(funStr.indexOf(DESENSITIZATION_RULE) + 5).split(";")[0];
+            funStr = funStr.replaceFirst(DESENSITIZATION_RULE, "");
+            funStr = funStr.replaceFirst(dern + ";", "");
+        }
+        if (isHasSymbol(funStr, MERGE)) {
+            String mergeStr = PoiPublicUtil.getElStr(funStr,MERGE);
+            funStr = funStr.replace(mergeStr, "");
+            mergeStr = mergeStr.replaceFirst(MERGE, "");
+            try {
+                int colSpan = (int)Double.parseDouble(PoiPublicUtil.getRealValue(mergeStr, map).toString());
+                PoiMergeCellUtil.addMergedRegion(cell.getSheet(), cell.getRowIndex(),
+                        cell.getRowIndex() , cell.getColumnIndex(), cell.getColumnIndex() + colSpan - 1);
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(),e);
+            }
+        }
+        Object obj = funStr.indexOf(START_STR) == -1 ? eval(funStr, map) : PoiPublicUtil.getRealValue(funStr, map);
+        if (isDict) {
+            obj = dictHandler.toName(dict, null, funStr, obj);
+        }
+        if (isI18n) {
+            obj = i18nHandler.getLocaleName(obj.toString());
+        }
+        if (isDern) {
+            obj = PoiDataDesensitizationUtil.desensitization(dern,obj);
+        }
+        return obj;
+    }
+
     private boolean isHasSymbol(String text, String symbol) {
         return text.startsWith(symbol) || text.contains("{" + symbol)
-                || text.contains(" " + symbol);
+                || text.contains(" " + symbol) || text.contains(";" + symbol);
     }
 
     /**
@@ -704,23 +726,9 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
                 if (StringUtils.isEmpty(params.getName())) {
                     val = params.getConstValue();
                 } else {
-                    if (isHasSymbol(tempStr, NUMBER_SYMBOL)) {
-                        isNumber = true;
-                        tempStr = tempStr.replaceFirst(NUMBER_SYMBOL, "");
-                    }
                     map.put(templateParams.getTempParams(), t);
-                    boolean isDict = false;
-                    String  dict   = null;
-                    if (isHasSymbol(tempStr, DICT_HANDLER)) {
-                        isDict = true;
-                        dict = tempStr.substring(tempStr.indexOf(DICT_HANDLER) + 5).split(";")[0];
-                        tempStr = tempStr.replaceFirst(DICT_HANDLER, "");
-                        tempStr = tempStr.replaceFirst(dict + ";", "");
-                    }
-                    obj = eval(tempStr, map);
-                    if (isDict && !(obj instanceof Collection)) {
-                        obj = dictHandler.toName(dict, t, tempStr, obj);
-                    }
+                    isNumber = isHasSymbol(tempStr, NUMBER_SYMBOL);
+                    obj = getValByHandler(tempStr,map,row.getCell(ci));
                     val = obj.toString();
                 }
                 if (obj != null && obj instanceof Collection) {
@@ -754,7 +762,7 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
                 }
                 //判断这个属性是不是需要统计
                 if (params.isNeedSum()) {
-                    templateSumHandler.addValueOfKey(params.getName(), val);
+                    templateSumHandler.addValueOfKey(params.getName(), obj.toString());
                 }
                 //如果合并单元格,就把这个单元格的样式和之前的保持一致
                 setMergedRegionStyle(row, ci, params);

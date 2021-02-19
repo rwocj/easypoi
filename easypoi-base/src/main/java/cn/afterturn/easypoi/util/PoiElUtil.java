@@ -55,6 +55,7 @@ public final class PoiElUtil {
     public static final String CAL                = "cal:";
     public static final String DICT_HANDLER       = "dict:";
     public static final String I18N_HANDLER       = "i18n:";
+    public static final String DESENSITIZATION_RULE       = "deru:";
 
     private PoiElUtil() {
     }
@@ -68,12 +69,11 @@ public final class PoiElUtil {
      * @throws Exception
      */
     public static Object eval(String text, Map<String, Object> map) throws Exception {
-        String tempText = new String(text);
         Object obj      = innerEval(text, map);
         //如果没有被处理而且这个值找map中存在就处理这个值,找不到就返回空字符串
-        if (tempText.equals(obj.toString())) {
-            if (map.containsKey(tempText.split("\\.")[0])) {
-                return PoiPublicUtil.getParamsValue(tempText, map);
+        if (text.equals(obj.toString())) {
+            if (map.containsKey(text.split("\\.")[0])) {
+                return PoiPublicUtil.getParamsValue(text, map);
             } else {
                 return "";
             }
