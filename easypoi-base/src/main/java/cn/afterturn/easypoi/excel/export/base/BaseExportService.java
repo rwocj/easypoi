@@ -26,7 +26,9 @@ import cn.afterturn.easypoi.util.PoiMergeCellUtil;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -62,14 +64,14 @@ public abstract class BaseExportService extends ExportCommonService {
                              short rowHeight, int cellNum) {
         try {
             ExcelExportEntity entity;
-            Row               row = sheet.getRow(index) == null ? sheet.createRow(index) : sheet.getRow(index);
+            Row row = sheet.getRow(index) == null ? sheet.createRow(index) : sheet.getRow(index);
             if (rowHeight != -1) {
                 row.setHeight(rowHeight);
             }
             int maxHeight = 1, listMaxHeight = 1;
             // 合并需要合并的单元格
             int margeCellNum = cellNum;
-            int indexKey     = 0;
+            int indexKey = 0;
             if (excelParams != null && !excelParams.isEmpty()) {
                 indexKey = createIndexCell(row, index, excelParams.get(0));
             }
@@ -78,8 +80,8 @@ public abstract class BaseExportService extends ExportCommonService {
                 entity = excelParams.get(k);
                 //不论数据是否为空都应该把该列的数据跳过去
                 if (entity.getList() != null) {
-                    Collection<?> list          = getListCellValue(entity, t);
-                    int           tmpListHeight = 0;
+                    Collection<?> list = getListCellValue(entity, t);
+                    int tmpListHeight = 0;
                     if (list != null && list.size() > 0) {
                         int tempCellNum = 0;
                         for (Object obj : list) {
@@ -175,13 +177,13 @@ public abstract class BaseExportService extends ExportCommonService {
      */
     public void createImageCell(Drawing patriarch, ExcelExportEntity entity, Row row, int i,
                                 String imagePath, Object obj) throws Exception {
-        Cell   cell  = row.createCell(i);
+        Cell cell = row.createCell(i);
         byte[] value = null;
         if (entity.getExportImageType() != 1) {
             if (entity.getMethods() == null && entity.getMethod() == null) {
-                value = (byte[])PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
+                value = (byte[]) PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
             } else {
-                value = (byte[])(entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
+                value = (byte[]) (entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
                         : entity.getMethod().invoke(obj, new Object[]{}));
             }
         }
@@ -260,7 +262,7 @@ public abstract class BaseExportService extends ExportCommonService {
                                 List<ExcelExportEntity> excelParams, Sheet sheet,
                                 Workbook workbook, short rowHeight) throws Exception {
         ExcelExportEntity entity;
-        Row               row;
+        Row row;
         if (sheet.getRow(index) == null) {
             row = sheet.createRow(index);
             if (rowHeight != -1) {
@@ -311,7 +313,7 @@ public abstract class BaseExportService extends ExportCommonService {
             cell.setCellValue(Double.parseDouble(text));
         } else {
             RichTextString rtext;
-            if (type.equals(ExcelType.HSSF)) {
+            if (cell instanceof HSSFCell) {
                 rtext = new HSSFRichTextString(text);
             } else {
                 rtext = new XSSFRichTextString(text);
@@ -321,6 +323,7 @@ public abstract class BaseExportService extends ExportCommonService {
         if (style != null) {
             cell.setCellStyle(style);
         }
+        createCellComment(row, cell, text, entity);
         addStatisticsData(index, text, entity);
     }
 
@@ -330,12 +333,10 @@ public abstract class BaseExportService extends ExportCommonService {
     public void createDoubleCell(Row row, int index, String text, CellStyle style,
                                  ExcelExportEntity entity) {
         Cell cell = row.createCell(index);
-        cell.setCellType(CellType.NUMERIC);
         if (text != null && text.length() > 0) {
             try {
                 cell.setCellValue(Double.parseDouble(text));
             } catch (NumberFormatException e) {
-                cell.setCellType(CellType.STRING);
                 cell.setCellValue(text);
             }
         }
@@ -343,7 +344,55 @@ public abstract class BaseExportService extends ExportCommonService {
         if (style != null) {
             cell.setCellStyle(style);
         }
+        createCellComment(row, cell, text, entity);
         addStatisticsData(index, text, entity);
+    }
+
+    /**
+     * 创建批注
+     *
+     * @param row
+     * @param cell
+     * @param text
+     * @param entity
+     */
+    private void createCellComment(Row row, Cell cell, String text, ExcelExportEntity entity) {
+        if (commentHandler != null) {
+            String comment = entity == null || entity.getName().equals(text)
+                    || (entity.getGroupName() != null && entity.getGroupName().equals(text)) ?
+                    commentHandler.getComment(text) : commentHandler.getComment(entity.getName(), text);
+            if (StringUtils.isNotBlank(comment)) {
+                cell.setCellComment(getComment(cell, comment, commentHandler.getAuthor()));
+            }
+        }
+    }
+
+    /**
+     * 获取注释对象
+     *
+     * @param cell
+     * @param commentText
+     * @param author
+     * @return
+     */
+    private Comment getComment(Cell cell, String commentText, String author) {
+        Comment comment = null;
+        if (cell instanceof HSSFCell) {
+            //前四个参数是坐标点,后四个参数是编辑和显示批注时的大小.
+            comment = cell.getSheet().createDrawingPatriarch().createCellComment(
+                    new HSSFClientAnchor(0, 0, 0, 0, (short) 3, 2, (short) 5,
+                            commentText.length()/15 + 2));
+            comment.setString(new HSSFRichTextString(commentText));
+        } else {
+            comment = cell.getSheet().createDrawingPatriarch().createCellComment(
+                    new XSSFClientAnchor(0, 0, 0, 0, (short) 3, 2, (short) 5,
+                            commentText.length()/15 + 2));
+            comment.setString(new XSSFRichTextString(commentText));
+        }
+        if (StringUtils.isNotBlank(author)) {
+            comment.setAuthor(author);
+        }
+        return comment;
     }
 
     /**
@@ -354,7 +403,7 @@ public abstract class BaseExportService extends ExportCommonService {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("add statistics data ,size is {}", statistics.size());
             }
-            Row          row  = sheet.createRow(sheet.getLastRowNum() + 1);
+            Row row = sheet.createRow(sheet.getLastRowNum() + 1);
             Set<Integer> keys = statistics.keySet();
             createStringCell(row, 0, "合计", styles, null);
             for (Integer key : keys) {

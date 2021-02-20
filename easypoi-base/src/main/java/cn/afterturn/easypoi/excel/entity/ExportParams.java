@@ -80,7 +80,7 @@ public class ExportParams extends ExcelBaseParams {
     /**
      * Excel 导出版本
      */
-    private ExcelType type              = ExcelType.HSSF;
+    private ExcelType type              = ExcelType.XSSF;
     /**
      * Excel 导出style
      */

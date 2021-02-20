@@ -23,7 +23,7 @@ import cn.afterturn.easypoi.excel.entity.params.ExcelCollectionParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelImportEntity;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelImportEnum;
-import cn.afterturn.easypoi.handler.inter.IExcelI18nHandler;
+import cn.afterturn.easypoi.handler.inter.II18nHandler;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import cn.afterturn.easypoi.util.PoiReflectorUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +46,7 @@ import java.util.*;
  */
 public class ImportBaseService {
 
-    protected IExcelI18nHandler i18nHandler;
+    protected II18nHandler i18nHandler;
 
 
     /**

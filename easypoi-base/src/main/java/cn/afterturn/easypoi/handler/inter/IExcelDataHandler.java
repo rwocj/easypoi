@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -22,15 +22,21 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 
 /**
  * Excel 导入导出 数据处理接口
- * 
+ *
  * @author JueYue
  *  2014年6月19日 下午11:59:45
  */
 public interface IExcelDataHandler<T> {
 
     /**
+     * 获取需要处理的字段,导入和导出统一处理了, 减少书写的字段
+     *
+     * @return
+     */
+    public String[] getNeedHandlerFields();
+    /**
      * 导出处理方法
-     * 
+     *
      * @param obj
      *            当前对象
      * @param name
@@ -42,15 +48,8 @@ public interface IExcelDataHandler<T> {
     public Object exportHandler(T obj, String name, Object value);
 
     /**
-     * 获取需要处理的字段,导入和导出统一处理了, 减少书写的字段
-     * 
-     * @return
-     */
-    public String[] getNeedHandlerFields();
-
-    /**
      * 导入处理方法 当前对象,当前字段名称,当前值
-     * 
+     *
      * @param obj
      *            当前对象
      * @param name

@@ -1,10 +1,11 @@
 package cn.afterturn.easypoi.handler.inter;
 
 /**
+ * 国际化接口
  * @author jueyue on 18-2-2.
  * @version 3.0.4
  */
-public interface IExcelI18nHandler {
+public interface II18nHandler {
 
     /**
      * 获取当前名称

@@ -250,6 +250,7 @@ public class ExcelExportService extends BaseExportService {
                 needHandlerList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             dictHandler = entity.getDictHandler();
+            commentHandler = entity.getCommentHandler();
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()
                     .getConstructor(Workbook.class).newInstance(workbook));

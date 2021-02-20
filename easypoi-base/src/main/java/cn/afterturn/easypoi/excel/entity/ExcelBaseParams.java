@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -15,9 +15,10 @@
  */
 package cn.afterturn.easypoi.excel.entity;
 
+import cn.afterturn.easypoi.handler.inter.ICommentHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelDataHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelDictHandler;
-import cn.afterturn.easypoi.handler.inter.IExcelI18nHandler;
+import cn.afterturn.easypoi.handler.inter.II18nHandler;
 import lombok.Data;
 
 /**
@@ -40,6 +41,10 @@ public class ExcelBaseParams {
     /**
      * 国际化处理类
      */
-    private IExcelI18nHandler i18nHandler;
+    private II18nHandler i18nHandler;
+    /**
+     * 批注处理类
+     */
+    private ICommentHandler commentHandler;
 
 }

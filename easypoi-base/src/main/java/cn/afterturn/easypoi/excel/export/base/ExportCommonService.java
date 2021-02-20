@@ -23,9 +23,10 @@ import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.excel.entity.vo.PoiBaseConstants;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
+import cn.afterturn.easypoi.handler.inter.ICommentHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelDataHandler;
 import cn.afterturn.easypoi.handler.inter.IExcelDictHandler;
-import cn.afterturn.easypoi.handler.inter.IExcelI18nHandler;
+import cn.afterturn.easypoi.handler.inter.II18nHandler;
 import cn.afterturn.easypoi.util.PoiDataDesensitizationUtil;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import cn.afterturn.easypoi.util.PoiReflectorUtil;
@@ -55,7 +56,8 @@ public class ExportCommonService {
 
     protected IExcelDataHandler dataHandler;
     protected IExcelDictHandler dictHandler;
-    protected IExcelI18nHandler i18nHandler;
+    protected II18nHandler      i18nHandler;
+    protected ICommentHandler   commentHandler;
 
     protected List<String> needHandlerList;
 
