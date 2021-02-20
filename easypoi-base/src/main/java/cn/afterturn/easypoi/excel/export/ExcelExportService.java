@@ -168,6 +168,7 @@ public class ExcelExportService extends BaseExportService {
         }
         try {
             List<ExcelExportEntity> excelParams = new ArrayList<ExcelExportEntity>();
+            i18nHandler = entity.getI18nHandler();
             // 得到所有字段
             Field[]     fileds   = PoiPublicUtil.getClassFields(pojoClass);
             ExcelTarget etarget  = pojoClass.getAnnotation(ExcelTarget.class);
@@ -249,7 +250,6 @@ public class ExcelExportService extends BaseExportService {
                 needHandlerList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             dictHandler = entity.getDictHandler();
-            i18nHandler = entity.getI18nHandler();
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()
                     .getConstructor(Workbook.class).newInstance(workbook));

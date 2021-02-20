@@ -63,6 +63,7 @@ public class ExcelBatchExportService extends ExcelExportService implements IWrit
             if (entity.isAddIndex()) {
                 excelParams.add(indexExcelEntity(entity));
             }
+            i18nHandler = entity.getI18nHandler();
             // 得到所有字段
             Field[]     fileds   = PoiPublicUtil.getClassFields(pojoClass);
             ExcelTarget etarget  = pojoClass.getAnnotation(ExcelTarget.class);
@@ -108,7 +109,6 @@ public class ExcelBatchExportService extends ExcelExportService implements IWrit
                 needHandlerList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             dictHandler = entity.getDictHandler();
-            i18nHandler = entity.getI18nHandler();
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()
                     .getConstructor(Workbook.class).newInstance(workbook));
