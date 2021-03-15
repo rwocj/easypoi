@@ -131,7 +131,7 @@ public @interface Excel {
     public String savePath() default "/excel/upload/img";
 
     /**
-     * 导出类型 1 是文本 2 是图片,3 是函数,10 是数字 默认是文本
+     * 导出类型 1 是文本 2 是图片,3 是函数,10 是数字， 11 特殊符号 默认是文本
      */
     public int type() default 1;
 

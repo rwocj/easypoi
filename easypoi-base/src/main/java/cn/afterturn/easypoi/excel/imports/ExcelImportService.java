@@ -19,7 +19,7 @@ import cn.afterturn.easypoi.excel.entity.params.ExcelCollectionParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelImportEntity;
 import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
-import cn.afterturn.easypoi.excel.entity.vo.BaseEntityTypeConstants;
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
 import cn.afterturn.easypoi.excel.imports.base.ImportBaseService;
 import cn.afterturn.easypoi.excel.imports.recursive.ExcelImportForkJoinWork;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
@@ -104,7 +104,7 @@ public class ExcelImportService extends ImportBaseService {
             Cell   cell        = row.getCell(i);
             String titleString = (String) titlemap.get(i);
             if (param.getExcelParams().containsKey(titleString)) {
-                if (param.getExcelParams().get(titleString).getType() == BaseEntityTypeConstants.IMAGE_TYPE) {
+                if (param.getExcelParams().get(titleString).getType() == BaseTypeConstants.IMAGE_TYPE) {
                     picId = row.getRowNum() + "_" + i;
                     saveImage(entity, picId, param.getExcelParams(), titleString, pictures, params);
                 } else {
@@ -231,7 +231,7 @@ public class ExcelImportService extends ImportBaseService {
                             String titleString = (String) titlemap.get(cn);
                             if (excelParams.containsKey(titleString) || isMap) {
                                 if (excelParams.get(titleString) != null
-                                        && excelParams.get(titleString).getType() == BaseEntityTypeConstants.IMAGE_TYPE) {
+                                        && excelParams.get(titleString).getType() == BaseTypeConstants.IMAGE_TYPE) {
                                     picId = row.getRowNum() + "_" + cn;
                                     saveImage(object, picId, excelParams, titleString, pictures,
                                             params);

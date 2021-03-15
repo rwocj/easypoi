@@ -3,7 +3,7 @@ package cn.afterturn.easypoi.csv.export;
 import cn.afterturn.easypoi.csv.entity.CsvExportParams;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.excel.entity.vo.BaseEntityTypeConstants;
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
 import cn.afterturn.easypoi.excel.export.base.BaseExportService;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
@@ -114,11 +114,11 @@ public class CsvExportService extends BaseExportService implements IWriter<Void>
             for (int k = 0, paramSize = excelParams.size(); k < paramSize; k++) {
                 entity = excelParams.get(k);
                 Object value = getCellValue(entity, t);
-                if (entity.getType() == BaseEntityTypeConstants.STRING_TYPE) {
+                if (entity.getType() == BaseTypeConstants.STRING_TYPE) {
                     sb.append(params.getTextMark());
                     sb.append(value.toString());
                     sb.append(params.getTextMark());
-                } else if (entity.getType() == BaseEntityTypeConstants.DOUBLE_TYPE) {
+                } else if (entity.getType() == BaseTypeConstants.DOUBLE_TYPE) {
                     sb.append(value.toString());
                 }
                 if (k < paramSize - 1) {

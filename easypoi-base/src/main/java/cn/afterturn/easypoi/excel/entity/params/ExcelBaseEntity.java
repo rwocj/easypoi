@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -18,7 +18,7 @@ package cn.afterturn.easypoi.excel.entity.params;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import cn.afterturn.easypoi.excel.entity.vo.BaseEntityTypeConstants;
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
 import lombok.Data;
 
 /**
@@ -39,7 +39,7 @@ public class ExcelBaseEntity {
     /**
      * 对应type
      */
-    private int          type = BaseEntityTypeConstants.STRING_TYPE;
+    private int          type = BaseTypeConstants.STRING_TYPE;
     /**
      * 数据库格式
      */

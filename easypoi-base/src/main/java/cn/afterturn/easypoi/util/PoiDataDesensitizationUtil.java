@@ -53,6 +53,13 @@ public class PoiDataDesensitizationUtil {
         return value;
     }
 
+    /**
+     * 特定字符分隔，添加星号
+     * @param start
+     * @param mark
+     * @param value
+     * @return
+     */
     private static String markSpilt(int start, String mark, String value) {
         if (value == null) {
             return null;
@@ -64,6 +71,13 @@ public class PoiDataDesensitizationUtil {
         return StringUtils.left(value, start).concat(StringUtils.leftPad(StringUtils.right(value, value.length() - end), value.length() - start, "*"));
     }
 
+    /**
+     * 部分数据截取，优先对称截取
+     * @param start
+     * @param end
+     * @param value
+     * @return
+     */
     private static String subMaxString(int start, int end, String value) {
         if (value == null) {
             return null;
@@ -90,6 +104,13 @@ public class PoiDataDesensitizationUtil {
         }
     }
 
+    /**
+     * 收尾截取数据
+     * @param start
+     * @param end
+     * @param value
+     * @return
+     */
     private static String subStartEndString(int start, int end, String value) {
         if (value == null) {
             return null;

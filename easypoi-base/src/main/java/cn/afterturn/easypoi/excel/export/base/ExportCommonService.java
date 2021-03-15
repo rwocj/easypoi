@@ -15,12 +15,15 @@
  */
 package cn.afterturn.easypoi.excel.export.base;
 
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
+import cn.afterturn.easypoi.entity.ImageEntity;
+import cn.afterturn.easypoi.entity.SpecialSymbolsEnum;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.excel.entity.vo.PoiBaseConstants;
+import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
 import cn.afterturn.easypoi.handler.inter.ICommentHandler;
@@ -210,6 +213,14 @@ public class ExportCommonService {
                 value = entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
                         : entity.getMethod().invoke(obj, new Object[]{});
             }
+        }
+        if (value instanceof ImageEntity) {
+            entity.setType(BaseTypeConstants.IMAGE_TYPE);
+            return value;
+        }
+        if (value instanceof SpecialSymbolsEnum) {
+            entity.setType(BaseTypeConstants.Symbol_TYPE);
+            return value;
         }
         if (StringUtils.isNotEmpty(entity.getFormat())) {
             value = dateFormatValue(value, entity);

@@ -14,10 +14,11 @@
 package cn.afterturn.easypoi.excel.export.base;
 
 import cn.afterturn.easypoi.cache.ImageCache;
+import cn.afterturn.easypoi.entity.SpecialSymbolsEnum;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.excel.entity.vo.BaseEntityTypeConstants;
-import cn.afterturn.easypoi.excel.entity.vo.PoiBaseConstants;
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
+import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.excel.export.styler.IExcelExportStyler;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
@@ -28,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -97,13 +97,17 @@ public abstract class BaseExportService extends ExportCommonService {
                 } else {
                     Object value = getCellValue(entity, t);
 
-                    if (entity.getType() == BaseEntityTypeConstants.STRING_TYPE) {
+                    if (entity.getType() == BaseTypeConstants.STRING_TYPE) {
                         createStringCell(row, cellNum++, value == null ? "" : value.toString(),
                                 index % 2 == 0 ? getStyles(false, entity) : getStyles(true, entity),
                                 entity);
 
-                    } else if (entity.getType() == BaseEntityTypeConstants.DOUBLE_TYPE) {
+                    } else if (entity.getType() == BaseTypeConstants.DOUBLE_TYPE) {
                         createDoubleCell(row, cellNum++, value == null ? "" : value.toString(),
+                                index % 2 == 0 ? getStyles(false, entity) : getStyles(true, entity),
+                                entity);
+                    } else if (entity.getType() == BaseTypeConstants.Symbol_TYPE) {
+                        createSymbolCell(row, cellNum++, value,
                                 index % 2 == 0 ? getStyles(false, entity) : getStyles(true, entity),
                                 entity);
                     } else {
@@ -152,6 +156,26 @@ public abstract class BaseExportService extends ExportCommonService {
             throw new ExcelExportException(ExcelExportEnum.EXPORT_ERROR, e);
         }
 
+    }
+
+    private void createSymbolCell(Row row, int index, Object specialSymbolsEnum, CellStyle style,
+                                  ExcelExportEntity entity) {
+        SpecialSymbolsEnum symbol = (SpecialSymbolsEnum) specialSymbolsEnum;
+        Cell cell = row.createCell(index);
+        Font font = cell.getSheet().getWorkbook().createFont();
+        font.setFontName(symbol.getFont());
+        RichTextString rtext;
+        if (cell instanceof HSSFCell) {
+            rtext = new HSSFRichTextString(symbol.getUnicode());
+            rtext.applyFont(font);
+        } else {
+            rtext = new XSSFRichTextString(symbol.getUnicode());
+            rtext.applyFont(font);
+        }
+        cell.setCellValue(rtext);
+        if (style != null) {
+            cell.setCellStyle(style);
+        }
     }
 
     /**
@@ -277,7 +301,7 @@ public abstract class BaseExportService extends ExportCommonService {
         for (int k = 0, paramSize = excelParams.size(); k < paramSize; k++) {
             entity = excelParams.get(k);
             Object value = getCellValue(entity, obj);
-            if (entity.getType() == BaseEntityTypeConstants.STRING_TYPE) {
+            if (entity.getType() == BaseTypeConstants.STRING_TYPE) {
                 createStringCell(row, cellNum++, value == null ? "" : value.toString(),
                         row.getRowNum() % 2 == 0 ? getStyles(false, entity) : getStyles(true, entity),
                         entity);
@@ -287,7 +311,7 @@ public abstract class BaseExportService extends ExportCommonService {
                                     row.getSheet().getWorkbook().getCreationHelper(), obj, entity.getName(),
                                     value));
                 }
-            } else if (entity.getType() == BaseEntityTypeConstants.DOUBLE_TYPE) {
+            } else if (entity.getType() == BaseTypeConstants.DOUBLE_TYPE) {
                 createDoubleCell(row, cellNum++, value == null ? "" : value.toString(),
                         index % 2 == 0 ? getStyles(false, entity) : getStyles(true, entity), entity);
                 if (entity.isHyperlink()) {
@@ -381,12 +405,12 @@ public abstract class BaseExportService extends ExportCommonService {
             //前四个参数是坐标点,后四个参数是编辑和显示批注时的大小.
             comment = cell.getSheet().createDrawingPatriarch().createCellComment(
                     new HSSFClientAnchor(0, 0, 0, 0, (short) 3, 2, (short) 5,
-                            commentText.length()/15 + 2));
+                            commentText.length() / 15 + 2));
             comment.setString(new HSSFRichTextString(commentText));
         } else {
             comment = cell.getSheet().createDrawingPatriarch().createCellComment(
                     new XSSFClientAnchor(0, 0, 0, 0, (short) 3, 2, (short) 5,
-                            commentText.length()/15 + 2));
+                            commentText.length() / 15 + 2));
             comment.setString(new XSSFRichTextString(commentText));
         }
         if (StringUtils.isNotBlank(author)) {
