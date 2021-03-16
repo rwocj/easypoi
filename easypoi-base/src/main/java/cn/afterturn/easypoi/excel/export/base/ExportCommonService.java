@@ -17,7 +17,7 @@ package cn.afterturn.easypoi.excel.export.base;
 
 import cn.afterturn.easypoi.entity.BaseTypeConstants;
 import cn.afterturn.easypoi.entity.ImageEntity;
-import cn.afterturn.easypoi.entity.SpecialSymbolsEnum;
+import cn.afterturn.easypoi.entity.SpecialSymbolsEntity;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
@@ -218,7 +218,7 @@ public class ExportCommonService {
             entity.setType(BaseTypeConstants.IMAGE_TYPE);
             return value;
         }
-        if (value instanceof SpecialSymbolsEnum) {
+        if (value instanceof SpecialSymbolsEntity) {
             entity.setType(BaseTypeConstants.Symbol_TYPE);
             return value;
         }

@@ -14,7 +14,7 @@
 package cn.afterturn.easypoi.excel.export.base;
 
 import cn.afterturn.easypoi.cache.ImageCache;
-import cn.afterturn.easypoi.entity.SpecialSymbolsEnum;
+import cn.afterturn.easypoi.entity.SpecialSymbolsEntity;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.entity.BaseTypeConstants;
@@ -160,7 +160,7 @@ public abstract class BaseExportService extends ExportCommonService {
 
     private void createSymbolCell(Row row, int index, Object specialSymbolsEnum, CellStyle style,
                                   ExcelExportEntity entity) {
-        SpecialSymbolsEnum symbol = (SpecialSymbolsEnum) specialSymbolsEnum;
+        SpecialSymbolsEntity symbol = (SpecialSymbolsEntity) specialSymbolsEnum;
         Cell cell = row.createCell(index);
         Font font = cell.getSheet().getWorkbook().createFont();
         font.setFontName(symbol.getFont());

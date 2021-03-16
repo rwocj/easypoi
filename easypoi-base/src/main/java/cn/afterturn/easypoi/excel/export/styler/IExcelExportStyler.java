@@ -42,10 +42,6 @@ public interface IExcelExportStyler {
     /**
      * 获取样式方法
      */
-    @Deprecated
-    @Removal(
-            version = "4.2"
-    )
     public CellStyle getStyles(boolean parity, ExcelExportEntity entity);
 
     /**

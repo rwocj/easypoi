@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -15,8 +15,6 @@
  */
 package cn.afterturn.easypoi.excel.entity.enmus;
 
-import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerBorderImpl;
-import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerColorImpl;
 import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerDefaultImpl;
 
 /**
