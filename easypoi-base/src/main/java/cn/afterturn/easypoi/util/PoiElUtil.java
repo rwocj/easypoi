@@ -221,7 +221,7 @@ public final class PoiElUtil {
             if ((constant = isConstant(keys[0])) != null) {
                 return Boolean.valueOf(constant);
             }
-            return Boolean.valueOf(PoiPublicUtil.getParamsValue(keys[0], map).toString());
+            return Boolean.valueOf(eval(keys[0], map).toString());
         }
         if (keys.length == 3) {
             Object first  = evalNoParse(keys[0], map);
@@ -257,7 +257,7 @@ public final class PoiElUtil {
         text = text.replace(FORMAT_NUMBER, EMPTY);
         return innerEval(
                 replacinnerEvalue(text,
-                        PoiFunctionUtil.formatNumber(PoiPublicUtil.getParamsValue(key[0], map), key[1])),
+                        PoiFunctionUtil.formatNumber(eval(key[0], map), key[1])),
                 map);
     }
 
@@ -274,7 +274,7 @@ public final class PoiElUtil {
         text = text.replace(FORMAT_DATE, EMPTY);
         return innerEval(
                 replacinnerEvalue(text,
-                        PoiFunctionUtil.formatDate(PoiPublicUtil.getParamsValue(key[0], map), key[1])),
+                        PoiFunctionUtil.formatDate(eval(key[0], map), key[1])),
                 map);
     }
 
@@ -288,7 +288,7 @@ public final class PoiElUtil {
     private static Object length(String text, Map<String, Object> map) throws Exception {
         String key = getKey(LENGTH, text);
         text = text.replace(LENGTH, EMPTY);
-        Object val = PoiPublicUtil.getParamsValue(key, map);
+        Object val = eval(key, map);
         return innerEval(replacinnerEvalue(text, PoiFunctionUtil.length(val)), map);
     }
 
