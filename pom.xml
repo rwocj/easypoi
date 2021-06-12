@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.afterturn</groupId>
     <artifactId>easypoi</artifactId>
-    <version>4.3.0</version>
+    <version>4.4.0</version>
     <packaging>pom</packaging>
     <name>easypoi</name>
     <modules>
-        <module>easypoi-annotation</module>
         <module>easypoi-base</module>
         <module>easypoi-web</module>
+        <module>easypoi-annotation</module>
         <module>easypoi-wps</module>
     </modules>
 
@@ -41,17 +41,17 @@
     </developers>
 
     <organization>
-        <name>Lemur</name>
-        <url>http://opensource.afterturn.cn/</url>
+        <name>悟耘</name>
+        <url>http://www.wupaas.com/</url>
     </organization>
 
     <properties>
-        <sub.version>4.3.0</sub.version>
+        <sub.version>4.4.0</sub.version>
         <poi.version>4.1.1</poi.version>
         <xerces.version>2.9.1</xerces.version>
         <guava.version>16.0.1</guava.version>
         <commons-lang.version>3.2.1</commons-lang.version>
-        <slf4j.version>1.7.26</slf4j.version>
+        <slf4j.version>1.6.1</slf4j.version>
         <spring.version>5.1.7.RELEASE</spring.version>
     </properties>
     <dependencyManagement>
@@ -79,7 +79,7 @@
                 </exclusions>
                 <version>${poi.version}</version>
             </dependency>
-            <!-- sax -->
+            <!-- sax  -->
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
@@ -92,7 +92,8 @@
                 <version>${poi.version}</version>
                 <optional>true</optional>
             </dependency>
-            <!-- Word-->
+
+            <!-- Word -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml-schemas</artifactId>
@@ -107,7 +108,7 @@
                 <optional>true</optional>
             </dependency>
 
-            <!-- google-->
+            <!-- google 工具类 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -120,6 +121,7 @@
                 <version>${commons-lang.version}</version>
             </dependency>
 
+            <!--日志 -->
             <!-- slf4j -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -161,6 +163,7 @@
                 <version>${spring.version}</version>
             </dependency>
 
+
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
@@ -178,22 +181,30 @@
             </dependency>
 
             <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itext-asian</artifactId>
+                <version>5.2.0</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>1.1.0.Final</version>
             </dependency>
 
-            <!-- Excel -->
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>1.8.3</version>
-            </dependency>
-
+            <!-- el -->
             <dependency>
                 <groupId>ognl</groupId>
                 <artifactId>ognl</artifactId>
                 <version>3.2.6</version>
+            </dependency>
+
+            <!-- read Excel -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>1.8.3</version>
             </dependency>
 
             <dependency>
@@ -241,21 +252,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
@@ -264,6 +260,33 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -287,5 +310,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>oss-release</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>oss-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
