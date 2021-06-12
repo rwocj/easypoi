@@ -69,7 +69,9 @@ public interface IEasyPoiWpsConvertService {
         // 内容如{"SrcUri":"http://xxx","FileName":"xxx","ExportType":"pdf","CallBack":"http://xxx/v1/3rd/convertresult","TaskId":"abcd1234"};
         String parsStr = JSONUtil.toJsonStr(param);
         String result = HttpUtil.createPost(CONVERT_API).addHeaders(headers).body(parsStr).execute().body();
-        return "OK".equalsIgnoreCase(JSONUtil.parseObj(result).get("Code").toString());
+        return "OK".equalsIgnoreCase(JSONUtil.parseObj(result).get("Code").toString())||
+               "AlreadyExists".equalsIgnoreCase(JSONUtil.parseObj(result).get("Code").toString())
+        ;
     }
 
 

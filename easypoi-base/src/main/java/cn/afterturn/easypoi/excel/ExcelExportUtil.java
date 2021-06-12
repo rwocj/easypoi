@@ -135,7 +135,6 @@ public final class ExcelExportUtil {
     public static Workbook exportExcel(ExportParams entity, List<ExcelExportEntity> entityList,
                                        Collection<?> dataSet) {
         Workbook workbook = getWorkbook(entity.getType(), dataSet.size());
-        ;
         new ExcelExportService().createSheetForMap(workbook, entity, entityList, dataSet);
         return workbook;
     }

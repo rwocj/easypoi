@@ -23,13 +23,13 @@ public class EasyPoiConvertController {
         byte[] bytes = null;
         while (isOk) {
             try {
+                Thread.sleep(1000);
                 bytes = service.getConvertFile(taskId);
             } catch (Exception e) {}
             if (bytes != null || timeout > 120) {
                 isOk = false;
             }
             timeout ++;
-            Thread.sleep(1000);
         }
         return bytes;
     }

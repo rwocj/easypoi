@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -35,8 +35,8 @@ import cn.afterturn.easypoi.exception.excel.ExcelExportException;
  */
 public final class PoiFunctionUtil {
 
-    private static final String           TWO_DECIMAL_STR   = "###.00";
-    private static final String           THREE_DECIMAL_STR = "###.000";
+    private static final String           TWO_DECIMAL_STR   = "###0.00";
+    private static final String           THREE_DECIMAL_STR = "###0.000";
 
     private static final DecimalFormat    TWO_DECIMAL       = new DecimalFormat(TWO_DECIMAL_STR);
     private static final DecimalFormat    THREE_DECIMAL     = new DecimalFormat(THREE_DECIMAL_STR);
