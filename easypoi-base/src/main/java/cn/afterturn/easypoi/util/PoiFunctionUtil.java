@@ -106,7 +106,15 @@ public final class PoiFunctionUtil {
             return "";
         }
         if (obj instanceof Date || obj instanceof Number) {
-            return new SimpleDateFormat(format).format(obj);
+            if (DAY_STR.equals(format)){
+                return DAY_FORMAT.format(obj);
+            } else if (TIME_STR.equals(format)){
+                return TIME_FORMAT.format(obj);
+            } else if (TIME__NO_S_STR.equals(format)){
+                return TIME__NO_S_FORMAT.format(obj);
+            } else {
+                return new SimpleDateFormat(format).format(obj);
+            }
         } else if (obj instanceof TemporalAccessor) {
             return DateTimeFormatter.ofPattern(format).format((TemporalAccessor) obj);
         }
