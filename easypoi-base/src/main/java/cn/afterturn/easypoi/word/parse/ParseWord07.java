@@ -247,12 +247,15 @@ public class ParseWord07 {
         } else {
             MyXWPFDocument doc = WordCache.getXWPFDocument(url);
             parseWordSetValue(doc, list.get(0));
-            //插入分页
-            doc.createParagraph().setPageBreak(true);
+            //插入分页(推荐这种分页方式，每页上方不会产生留白)
+            doc.createParagraph().createRun().addBreak(BreakType.PAGE);
             for (int i = 1; i < list.size(); i++) {
                 MyXWPFDocument tempDoc = WordCache.getXWPFDocument(url);
                 parseWordSetValue(tempDoc, list.get(i));
-                tempDoc.createParagraph().setPageBreak(true);
+                //最后一页不插入分页
+                if (i < list.size() - 1) {
+                    tempDoc.createParagraph().createRun().addBreak(BreakType.PAGE);
+                }
                 doc.getDocument().addNewBody().set(tempDoc.getDocument().getBody());
 
             }
