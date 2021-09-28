@@ -28,12 +28,24 @@ import cn.afterturn.easypoi.util.PoiMergeCellUtil;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -321,7 +333,15 @@ public class ExcelExportService extends BaseExportService {
                 ExcelExportEntity entity = excelParams.get(i);
                 CellRangeAddressList regions = new CellRangeAddressList(index,
                         this.type.equals(ExcelType.XSSF) ? 1000000 : 65535, cellIndex, cellIndex);
-                sheet.addValidationData(sheet.getDataValidationHelper().createValidation(sheet.getDataValidationHelper().createExplicitListConstraint(getAddressListValues(entity)), regions));
+                DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(sheet.getDataValidationHelper().createExplicitListConstraint(getAddressListValues(entity)), regions);
+                // 处理Excel兼容性问题
+                if (dataValidation instanceof XSSFDataValidation) {
+                    dataValidation.setSuppressDropDownArrow(true);
+                    dataValidation.setShowErrorBox(true);
+                } else {
+                    dataValidation.setSuppressDropDownArrow(false);
+                }
+                sheet.addValidationData(dataValidation);
             }
             if (excelParams.get(i).getList() != null) {
                 cellIndex = createAddressList(sheet, index, excelParams.get(i).getList(), cellIndex);
