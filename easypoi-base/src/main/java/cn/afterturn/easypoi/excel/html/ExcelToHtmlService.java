@@ -163,6 +163,10 @@ public class ExcelToHtmlService {
         endColumn = 0;
         for (int i = 0; i < lastRow; i++) {
             Row   row       = sheet.getRow(i);
+            if(null == row){
+                continue;
+            }
+            
             short firstCell = row.getFirstCellNum();
             if (firstCell >= 0) {
                 firstColumn = Math.min(firstColumn, firstCell);
