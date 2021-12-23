@@ -120,6 +120,8 @@ public class CellValueService {
                     if (DateUtil.isCellDateFormatted(cell)) {
                         if ("class java.lang.String".equals(classFullName)) {
                             result = formateDate(entity, cell.getDateCellValue());
+                        } else if ("class java.lang.Object".equals(classFullName)) {
+                            result = DateUtil.getJavaDate(cell.getNumericCellValue());
                         }
                     } else {
                         result = readNumericCell(cell);
