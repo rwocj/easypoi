@@ -385,6 +385,18 @@ public final class PoiPublicUtil {
     @SuppressWarnings("rawtypes")
     public static Object getValueDoWhile(Object object, String[] paramsArr,
                                          int index) throws Exception {
+        String params = paramsArr[index];
+        boolean isGetArrayVal = false;
+        int arrayIdx = -1;
+        if(params.indexOf("[") > -1 && params.indexOf("]") > -1){
+            isGetArrayVal = true;
+            // 获取索引长度
+            int startIdx = params.indexOf("[");
+            int endIdx = params.indexOf("]");
+            String idxStr = params.substring(startIdx + 1, endIdx);
+            arrayIdx = Integer.valueOf(idxStr.trim()).intValue();
+            params = params.substring(0,startIdx);
+        }
         if (object == null) {
             return "";
         }
@@ -392,10 +404,21 @@ public final class PoiPublicUtil {
             return object;
         }
         if (object instanceof Map) {
-            object = ((Map) object).get(paramsArr[index]);
+            object = ((Map) object).get(params);
         } else {
             object = PoiReflectorUtil.fromCache(object.getClass()).getValue(object,
-                    paramsArr[index]);
+                    params);
+        }
+        if(isGetArrayVal && null != object){
+            // 如果是获取列表中的某一个值，则取值
+            if(object instanceof List){
+                List list = (List) object;
+                if(arrayIdx < 0 || arrayIdx >= list.size()){
+                    object = null;
+                } else {
+                    object = ((List) object).get(arrayIdx);
+                }
+            }
         }
 
         if (object instanceof Collection) {
