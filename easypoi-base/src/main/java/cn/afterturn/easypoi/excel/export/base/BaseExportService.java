@@ -230,7 +230,7 @@ public abstract class BaseExportService extends ExportCommonService {
             anchor = new HSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex()),
                     cell.getRow().getRowNum());
         } else {
-            anchor = new XSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex()),
+            anchor = new XSSFClientAnchor(10 * Units.EMU_PER_POINT, 10 * Units.EMU_PER_POINT, 1010 * Units.EMU_PER_POINT, 245 * Units.EMU_PER_POINT, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex()),
                     cell.getRow().getRowNum());
         }
         if (StringUtils.isNotEmpty(imagePath)) {
