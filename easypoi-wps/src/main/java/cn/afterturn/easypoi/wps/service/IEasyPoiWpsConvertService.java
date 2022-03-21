@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 2021-05-21-5-25
  * @since 1.0
  */
-public interface IEasyPoiWpsConvertService {
+public interface IEasyPoiWpsConvertService  extends IEasyPoiWpsService {
 
     final String CONVERT_API = "https://dhs.open.wps.cn/pre/v1/convert" ; //转换请求地址
     final String QUERY_API = "https://dhs.open.wps.cn/pre/v1/query" ; //查询请求地址;
@@ -113,17 +113,4 @@ public interface IEasyPoiWpsConvertService {
         HttpUtil.download(downUrl,bos,true);
         return bos.toByteArray();
     }
-    /**
-     * APP秘钥
-     *
-     * @return
-     */
-    String getAppSecret();
-
-    /**
-     * 获取WPS配置的AppId
-     *
-     * @return
-     */
-    String getAppId();
 }

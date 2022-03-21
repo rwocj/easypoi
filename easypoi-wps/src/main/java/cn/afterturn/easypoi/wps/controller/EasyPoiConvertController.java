@@ -17,7 +17,8 @@ public class EasyPoiConvertController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiConvertController.class);
 
     @GetMapping("version/{version}")
-    public byte[] fileVersion(IEasyPoiWpsConvertService service, String taskId , String srcUri , String fileName , String exportType) throws Exception {
+    public byte[] fileVersion(IEasyPoiWpsConvertService service, String taskId ,
+                              String srcUri , String fileName , String exportType) throws Exception {
         boolean isOk = service.fileConvert(taskId,srcUri,fileName,exportType,null);
         int timeout = 0;
         byte[] bytes = null;

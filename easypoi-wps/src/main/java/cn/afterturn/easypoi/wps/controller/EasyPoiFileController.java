@@ -2,7 +2,7 @@ package cn.afterturn.easypoi.wps.controller;
 
 import cn.afterturn.easypoi.wps.entity.WpsToken;
 import cn.afterturn.easypoi.wps.entity.resreq.*;
-import cn.afterturn.easypoi.wps.service.IEasyPoiWpsService;
+import cn.afterturn.easypoi.wps.service.IEasyPoiWpsViewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class EasyPoiFileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiFileController.class);
 
     @Autowired(required = false)
-    private IEasyPoiWpsService easyPoiWpsService;
+    private IEasyPoiWpsViewService easyPoiWpsService;
 
     /**
      * 获取网络文件预览URL
