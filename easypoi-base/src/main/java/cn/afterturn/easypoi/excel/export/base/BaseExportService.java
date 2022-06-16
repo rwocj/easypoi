@@ -31,6 +31,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
@@ -207,8 +208,8 @@ public abstract class BaseExportService extends ExportCommonService {
             if (entity.getMethods() == null && entity.getMethod() == null) {
                 value = (byte[]) PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
             } else {
-                value = (byte[]) (entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
-                        : entity.getMethod().invoke(obj, new Object[]{}));
+                value = (byte[]) (entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj,entity.getMethodsParams())
+                        : getFieldByMethod(entity.getMethod(),obj,entity.getMethodParams()));
             }
         }
         createImageCell(cell, 50 * entity.getHeight(), entity.getExportImageType() == 1 ? imagePath : null, value);
