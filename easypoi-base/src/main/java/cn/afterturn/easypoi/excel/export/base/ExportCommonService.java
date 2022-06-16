@@ -211,7 +211,7 @@ public class ExportCommonService {
                 value = PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
             } else {
                 value = entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj,entity.getMethodsParams())
-                        : entity.getMethod().invoke(obj, new Object[]{});
+                        : getFieldByMethod(entity.getMethod(),obj,entity.getMethodParams());
             }
         }
         if (value instanceof ImageEntity) {
