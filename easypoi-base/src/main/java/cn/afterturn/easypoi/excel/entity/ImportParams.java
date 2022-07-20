@@ -58,6 +58,10 @@ public class ImportParams extends ExcelBaseParams {
      */
     private int                 sheetNum         = 1;
     /**
+     * 上传表格指定sheetName读取
+     */
+    private String sheetName;
+    /**
      * 是否需要保存上传的Excel,默认为false
      */
     private boolean             needSave         = false;
@@ -115,4 +119,5 @@ public class ImportParams extends ExcelBaseParams {
      * 最小截取大小
      */
     private Integer             critical = 1000;
+
 }
