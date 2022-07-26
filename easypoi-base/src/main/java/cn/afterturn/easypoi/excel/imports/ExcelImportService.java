@@ -470,10 +470,11 @@ public class ExcelImportService extends ImportBaseService {
             }
             importResult.setList(result);
             if (needMore) {
-                InputStream successIs = new ByteArrayInputStream(baos.toByteArray());
+                InputStream successIs = null;
                 try {
-                    Workbook successBook = WorkbookFactory.create(successIs);
                     if (params.isVerifyFileSplit()){
+                        successIs = new ByteArrayInputStream(baos.toByteArray());
+                        Workbook successBook = WorkbookFactory.create(successIs);
                         importResult.setWorkbook(removeSuperfluousRows(successBook, failRow, params));
                         importResult.setFailWorkbook(removeSuperfluousRows(book, successRow, params));
                     } else {
@@ -482,7 +483,9 @@ public class ExcelImportService extends ImportBaseService {
                     importResult.setFailList(failCollection);
                     importResult.setVerifyFail(verifyFail);
                 } finally {
-                    successIs.close();
+                    if (successIs != null) {
+                        successIs.close();
+                    }
                 }
             }
         } finally {
