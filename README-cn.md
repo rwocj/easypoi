@@ -6,6 +6,8 @@ EasyPoi Excel和 Word简易工具类
 就可以方便的写出Excel导出,Excel模板导出,Excel导入,Word模板导出,通过简单的注解和模板
 语言(熟悉的表达式语法),完成以前复杂的写法
 
+**早已远离开发，开源兴趣使然，各位高猿自用，无事勿扰拜谢。**
+
 	官网： http://www.wupaas.com/
 	邮箱： xue315998@qq.com
 	QQ群: 1群 364192721(满) 2 群116844390
@@ -15,18 +17,10 @@ EasyPoi Excel和 Word简易工具类
 Spring Boot 支持    https://gitee.com/lemur/easypoi-spring-boot-starter
 
 [官网](http://www.wupaas.com/)
-[英文介绍](https://github.com/jueyue/easypoi/blob/master/README.md) 
-**_希望头条扫码加个关注_**
-![avatar](https://images.gitee.com/uploads/images/2021/0220/165435_978ae6ff_69288.png)
 
 **开发指南**
 
 **[http://doc.wupaas.com/docs/easypoi/easypoi-1c0u4mo8p4ro8](http://doc.wupaas.com/docs/easypoi/easypoi-1c0u4mo8p4ro8)**
-
-下一步计划
- - 国际化,翻译文档以及注释
- - pdf全部改为模板导出方式
- - word模板和excel功能同步
 
 
 [用户征集](https://gitee.com/lemur/easypoi/issues/IFDX7)
