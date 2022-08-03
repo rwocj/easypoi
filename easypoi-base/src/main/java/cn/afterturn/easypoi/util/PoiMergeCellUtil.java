@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import cn.afterturn.easypoi.excel.entity.params.MergeEntity;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
+import org.apache.poi.ss.util.RegionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * 纵向合并单元格工具类
  *
  * @author JueYue
- *         2015年6月21日 上午11:21:40
+ * 2015年6月21日 上午11:21:40
  */
 public final class PoiMergeCellUtil {
 
@@ -212,6 +214,9 @@ public final class PoiMergeCellUtil {
 
 
     public static void addMergedRegion(Sheet sheet, int firstRow, int lastRow, int firstCol, int lastCol) {
+        if (firstRow == lastRow && firstCol == lastCol) {
+            return;
+        }
         try {
             sheet.addMergedRegion(new CellRangeAddress(firstRow, lastRow, firstCol, lastCol));
         } catch (Exception e) {
@@ -221,6 +226,14 @@ public final class PoiMergeCellUtil {
             // 忽略掉合并的错误,不打印异常
             LOGGER.debug(e.getMessage(), e);
         }
+    }
+
+    public static void setBorder(BorderStyle borderStyle, Sheet sheet, int firstRow, int lastRow, int firstCol, int lastCol) {
+        CellRangeAddress cra = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
+        RegionUtil.setBorderBottom(borderStyle, cra, sheet);
+        RegionUtil.setBorderLeft(borderStyle, cra, sheet);
+        RegionUtil.setBorderRight(borderStyle, cra, sheet);
+        RegionUtil.setBorderTop(borderStyle, cra, sheet);
     }
 
 }
