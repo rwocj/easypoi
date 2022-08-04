@@ -6,9 +6,9 @@ EasyPoi - Easy utility classes of Excel and Word
 export/import Excel, export Excel Template and Word Template, and export PDF. We encapsulate Apache poi in the upper layers. 
 With simple annotations and templates Language (familiar expression syntax) to accomplish previously complex coding.
 
-	Email： qrb.jueyue@foxmail.com
-	Developer:Jueyue qrb.jueyue@foxmail.com
-	Excellent Team, undertake project development
+	Email： wuyundev@163.com
+	Developer:wuyundev@163.com
+
 Support Spring Boot    https://gitee.com/lemur/easypoi-spring-boot-starter
 
 **The Dev Guide**

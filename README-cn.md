@@ -9,12 +9,9 @@ EasyPoi Excel和 Word简易工具类
 **早已远离开发，开源兴趣使然，各位高猿自用，无事勿扰拜谢。**
 
 	官网： http://www.wupaas.com/
-	邮箱： xue315998@qq.com
+	邮箱： wuyundev@163.com
 	QQ群: 1群 364192721(满) 2 群116844390
 	
-	开发者:魔幻之翼 xf.key@163.com
-	
-Spring Boot 支持    https://gitee.com/lemur/easypoi-spring-boot-starter
 
 [官网](http://www.wupaas.com/)
 
@@ -129,6 +126,7 @@ https://oss.sonatype.org/content/groups/public/
               <artifactId>easypoi-spring-boot-starter</artifactId>
               <version>4.3.0</version>
          </dependency>
+        <!-- 建议只用start -->
 		 <dependency>
 			<groupId>cn.afterturn</groupId>
 			<artifactId>easypoi-base</artifactId>
