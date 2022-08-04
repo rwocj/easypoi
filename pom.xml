@@ -11,6 +11,7 @@
         <module>easypoi-web</module>
         <module>easypoi-annotation</module>
         <module>easypoi-wps</module>
+        <module>easypoi-spring-boot-starter</module>
     </modules>
 
     <url>http://www.wupaas.com/</url>
