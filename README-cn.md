@@ -10,8 +10,6 @@ EasyPoi Excel和 Word简易工具类
 
 	官网： http://www.wupaas.com/
 	邮箱： wuyundev@163.com
-	QQ群: 1群 364192721(满) 2 群116844390
-	
 
 [官网](http://www.wupaas.com/)
 

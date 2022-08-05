@@ -7,7 +7,6 @@ export/import Excel, export Excel Template and Word Template, and export PDF. We
 With simple annotations and templates Language (familiar expression syntax) to accomplish previously complex coding.
 
 	Email： wuyundev@163.com
-	Developer:wuyundev@163.com
 
 Support Spring Boot    https://gitee.com/lemur/easypoi-spring-boot-starter
 
