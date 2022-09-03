@@ -801,6 +801,10 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
      */
     private void handlerLoopMergedRegion(Row row, int columnIndex, List<ExcelForEachParams> columns, int loopSize) {
         for (int i = 0; i < columns.size(); i++) {
+            //在fe循环嵌套循环的场景下，如果单元格为合并的可能导致跨索引
+            if (columns.get(i) == null){
+                continue;
+            }
             if (!columns.get(i).isCollectCell()) {
                 PoiMergeCellUtil.addMergedRegion(row.getSheet(), row.getRowNum(),
                         row.getRowNum() + loopSize - 1, columnIndex,
@@ -882,6 +886,10 @@ public final class ExcelExportOfTemplateUtil extends BaseExportService {
     private List<ExcelForEachParams> getLoopEachParams(List<ExcelForEachParams> columns, int columnIndex, String collectName) {
         List<ExcelForEachParams> temp = new ArrayList<>();
         for (int i = 0; i < columns.size(); i++) {
+            //在fe循环嵌套循环的场景下，如果单元格为合并的可能导致跨索引
+            if (columns.get(i) == null){
+                continue;
+            }
             //先置为不是集合
             columns.get(i).setCollectCell(false);
             if (columns.get(i) == null || columns.get(i).getName().contains(collectName)) {
