@@ -439,32 +439,59 @@ public class ExcelImportService extends ImportBaseService {
             importResult = new ExcelImportResult();
             createErrorCellStyle(book);
             Map<String, PictureData> pictures;
-            for (int i = params.getStartSheetIndex(); i < params.getStartSheetIndex()
-                    + params.getSheetNum(); i++) {
+            if(StringUtils.isNotEmpty(params.getSheetName())){
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(" start to read excel by is ,startTime is {}", new Date());
                 }
                 if (isXSSFWorkbook) {
-                    pictures = PoiPublicUtil.getSheetPictrues07((XSSFSheet) book.getSheetAt(i),
+                    pictures = PoiPublicUtil.getSheetPictrues07((XSSFSheet) book.getSheet(params.getSheetName()),
                             (XSSFWorkbook) book);
                 } else {
-                    pictures = PoiPublicUtil.getSheetPictrues03((HSSFSheet) book.getSheetAt(i),
+                    pictures = PoiPublicUtil.getSheetPictrues03((HSSFSheet) book.getSheet(params.getSheetName()),
                             (HSSFWorkbook) book);
                 }
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(" end to read excel by is ,endTime is {}", new Date());
                 }
-                result.addAll(importExcel(result, book.getSheetAt(i), pojoClass, params, pictures));
+                result.addAll(importExcel(result, book.getSheet(params.getSheetName()), pojoClass, params, pictures));
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(" end to read excel list by sheet ,endTime is {}", new Date());
                 }
                 if (params.isReadSingleCell()) {
-                    readSingleCell(importResult, book.getSheetAt(i), params);
+                    readSingleCell(importResult, book.getSheet(params.getSheetName()), params);
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug(" read Key-Value ,endTime is {}", System.currentTimeMillis());
                     }
                 }
+            }else {
+                for (int i = params.getStartSheetIndex(); i < params.getStartSheetIndex()
+                        + params.getSheetNum(); i++) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(" start to read excel by is ,startTime is {}", new Date());
+                    }
+                    if (isXSSFWorkbook) {
+                        pictures = PoiPublicUtil.getSheetPictrues07((XSSFSheet) book.getSheetAt(i),
+                                (XSSFWorkbook) book);
+                    } else {
+                        pictures = PoiPublicUtil.getSheetPictrues03((HSSFSheet) book.getSheetAt(i),
+                                (HSSFWorkbook) book);
+                    }
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(" end to read excel by is ,endTime is {}", new Date());
+                    }
+                    result.addAll(importExcel(result, book.getSheetAt(i), pojoClass, params, pictures));
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(" end to read excel list by sheet ,endTime is {}", new Date());
+                    }
+                    if (params.isReadSingleCell()) {
+                        readSingleCell(importResult, book.getSheetAt(i), params);
+                        if (LOGGER.isDebugEnabled()) {
+                            LOGGER.debug(" read Key-Value ,endTime is {}", System.currentTimeMillis());
+                        }
+                    }
+                }
             }
+
             if (params.isNeedSave()) {
                 saveThisExcel(params, pojoClass, isXSSFWorkbook, book);
             }
@@ -496,17 +523,29 @@ public class ExcelImportService extends ImportBaseService {
     }
 
     private Workbook removeSuperfluousRows(Workbook book, List<Row> rowList, ImportParams params) {
-        for (int i = params.getStartSheetIndex(); i < params.getStartSheetIndex()
-                + params.getSheetNum(); i++) {
+        if(StringUtils.isNotEmpty(params.getSheetName())){
             for (int j = rowList.size() - 1; j >= 0; j--) {
                 if (rowList.get(j).getRowNum() < rowList.get(j).getSheet().getLastRowNum()) {
-                    book.getSheetAt(i).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum(), -1);
+                    book.getSheet(params.getSheetName()).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum(), -1);
                 } else if (rowList.get(j).getRowNum() == rowList.get(j).getSheet().getLastRowNum()) {
-                    book.getSheetAt(i).createRow(rowList.get(j).getRowNum() + 1);
-                    book.getSheetAt(i).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum() + 1, -1);
+                    book.getSheet(params.getSheetName()).createRow(rowList.get(j).getRowNum() + 1);
+                    book.getSheet(params.getSheetName()).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum() + 1, -1);
+                }
+            }
+        }else {
+            for (int i = params.getStartSheetIndex(); i < params.getStartSheetIndex()
+                    + params.getSheetNum(); i++) {
+                for (int j = rowList.size() - 1; j >= 0; j--) {
+                    if (rowList.get(j).getRowNum() < rowList.get(j).getSheet().getLastRowNum()) {
+                        book.getSheetAt(i).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum(), -1);
+                    } else if (rowList.get(j).getRowNum() == rowList.get(j).getSheet().getLastRowNum()) {
+                        book.getSheetAt(i).createRow(rowList.get(j).getRowNum() + 1);
+                        book.getSheetAt(i).shiftRows(rowList.get(j).getRowNum() + 1, rowList.get(j).getSheet().getLastRowNum() + 1, -1);
+                    }
                 }
             }
         }
+
         return book;
     }
 
