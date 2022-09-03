@@ -61,6 +61,10 @@ public class ExcelBaseEntity {
      */
     private Method       method;
     /**
+     * method需要的参数
+     */
+    private List<Object> methodParams;
+    /**
      * 这个是不是超链接,如果是需要实现接口返回对象
      */
     private boolean     hyperlink;
@@ -78,5 +82,9 @@ public class ExcelBaseEntity {
     private boolean      addressList;
 
     private List<Method> methods;
+    /**
+     * methods需要的参数
+     */
+    private List<List<Object>> methodsParams;
 
 }

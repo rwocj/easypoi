@@ -210,8 +210,8 @@ public class ExportCommonService {
             if (entity.getMethods() == null && entity.getMethod() == null) {
                 value = PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
             } else {
-                value = entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj)
-                        : entity.getMethod().invoke(obj, new Object[]{});
+                value = entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj,entity.getMethodsParams())
+                        : getFieldByMethod(entity.getMethod(),obj,entity.getMethodParams());
             }
         }
         if (value instanceof ImageEntity) {
@@ -307,15 +307,27 @@ public class ExportCommonService {
     /**
      * 多个反射获取值
      */
-    public Object getFieldBySomeMethod(List<Method> list, Object t) throws Exception {
-        for (Method m : list) {
+    public Object getFieldBySomeMethod(List<Method> list, Object t,List<List<Object>> methodsParams) throws Exception {
+        for (int i = 0; i < list.size(); i++) {
             if (t == null) {
                 t = "";
                 break;
             }
-            t = m.invoke(t, new Object[]{});
+            Method m = list.get(i);
+            if(m.getParameterCount() == 0){
+                t = m.invoke(t);
+            }else{
+                t = m.invoke(t,methodsParams.get(i).toArray());
+            }
         }
         return t;
+    }
+
+    public Object getFieldByMethod(Method method, Object t,List<Object> params) throws Exception {
+        if(method.getParameterCount() == 0){
+            return method.invoke(t);
+        }
+        return method.invoke(t,params.toArray());
     }
 
     /**
