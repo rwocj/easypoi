@@ -269,6 +269,7 @@ public class ExportCommonService {
     private void getExcelField(String targetId, Field field, ExcelExportEntity excelEntity,
                                Excel excel, Class<?> pojoClass, ExcelEntity excelGroup) throws Exception {
         excelEntity.setName(PoiPublicUtil.getValueByTargetId(excel.name(), targetId, null));
+        excelEntity.setKey(field.getName());
         excelEntity.setWidth(excel.width());
         excelEntity.setHeight(excel.height());
         excelEntity.setNeedMerge(excel.needMerge());
