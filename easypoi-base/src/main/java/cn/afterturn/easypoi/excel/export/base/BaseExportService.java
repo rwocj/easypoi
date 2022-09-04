@@ -159,9 +159,9 @@ public abstract class BaseExportService extends ExportCommonService {
 
     }
 
-    private void createSymbolCell(Row row, int index, Object specialSymbolsEnum, CellStyle style,
+    private void createSymbolCell(Row row, int index, Object specialSymbolsEntity, CellStyle style,
                                   ExcelExportEntity entity) {
-        SpecialSymbolsEntity symbol = (SpecialSymbolsEntity) specialSymbolsEnum;
+        SpecialSymbolsEntity symbol = (SpecialSymbolsEntity) specialSymbolsEntity;
         Cell cell = row.createCell(index);
         Font font = cell.getSheet().getWorkbook().createFont();
         font.setFontName(symbol.getFont());

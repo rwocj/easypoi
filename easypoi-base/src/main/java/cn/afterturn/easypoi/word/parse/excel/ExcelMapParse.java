@@ -16,7 +16,6 @@ package cn.afterturn.easypoi.word.parse.excel;
 import cn.afterturn.easypoi.entity.ImageEntity;
 import cn.afterturn.easypoi.excel.entity.params.ExcelForEachParams;
 import cn.afterturn.easypoi.util.PoiPublicUtil;
-import cn.afterturn.easypoi.util.PoiWordStyleUtil;
 import cn.afterturn.easypoi.word.entity.MyXWPFDocument;
 import com.google.common.collect.Maps;
 import org.apache.poi.xwpf.usermodel.*;
@@ -167,7 +166,7 @@ public final class ExcelMapParse {
                 if (val instanceof ImageEntity) {
                     addAnImage((ImageEntity)val,tempCellList.get(cellIndex));
                 } else {
-                    PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
+                    PoiPublicUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
                             currentRow.getTableCells().get(cellIndex), val.toString());
                 }
             }
@@ -181,7 +180,7 @@ public final class ExcelMapParse {
                 if (val instanceof ImageEntity) {
                     addAnImage((ImageEntity)val,cell);
                 } else {
-                    PoiWordStyleUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
+                    PoiPublicUtil.copyCellAndSetValue(tempCellList.get(cellIndex),
                             cell, val.toString());
                 }
             }
