@@ -14,11 +14,11 @@
 package cn.afterturn.easypoi.excel.export.base;
 
 import cn.afterturn.easypoi.cache.ImageCache;
+import cn.afterturn.easypoi.entity.BaseTypeConstants;
+import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.entity.SpecialSymbolsEntity;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.entity.BaseTypeConstants;
-import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.excel.export.styler.IExcelExportStyler;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
@@ -208,8 +208,8 @@ public abstract class BaseExportService extends ExportCommonService {
             if (entity.getMethods() == null && entity.getMethod() == null) {
                 value = (byte[]) PoiPublicUtil.getParamsValue(entity.getKey().toString(), obj);
             } else {
-                value = (byte[]) (entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj,entity.getMethodsParams())
-                        : getFieldByMethod(entity.getMethod(),obj,entity.getMethodParams()));
+                value = (byte[]) (entity.getMethods() != null ? getFieldBySomeMethod(entity.getMethods(), obj, entity.getMethodsParams())
+                        : getFieldByMethod(entity.getMethod(), obj, entity.getMethodParams()));
             }
         }
         createImageCell(cell, 50 * entity.getHeight(), entity.getExportImageType() == 1 ? imagePath : null, value);
@@ -253,12 +253,17 @@ public abstract class BaseExportService extends ExportCommonService {
             cell.getRow().setHeight((short) height);
         }
         ClientAnchor anchor;
-        if (type.equals(ExcelType.HSSF)) {
-            anchor = new HSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
-                    cell.getRow().getRowNum() + rowspan - 1);
+//        if (type.equals(ExcelType.HSSF)) {
+//            anchor = new HSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
+//                    cell.getRow().getRowNum() + rowspan - 1);
+//        } else {
+//            anchor = new XSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
+//                    cell.getRow().getRowNum() + rowspan - 1);
+//        }
+        if (this.type.equals(ExcelType.HSSF)) {
+            anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan), cell.getRow().getRowNum() + rowspan);
         } else {
-            anchor = new XSSFClientAnchor(10, 10, 1010, 245, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan - 1),
-                    cell.getRow().getRowNum() + rowspan - 1);
+            anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + colspan), cell.getRow().getRowNum() + rowspan);
         }
         if (StringUtils.isNotEmpty(imagePath)) {
             data = ImageCache.getImage(imagePath);
