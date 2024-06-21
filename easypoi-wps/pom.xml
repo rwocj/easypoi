@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>cn.afterturn</groupId>
+		<groupId>top.rwocj</groupId>
 		<artifactId>easypoi</artifactId>
 		<version>4.4.0</version>
 	</parent>
@@ -41,7 +41,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>cn.afterturn</groupId>
+			<groupId>top.rwocj</groupId>
 			<artifactId>easypoi-base</artifactId>
 		</dependency>
 		<dependency>
