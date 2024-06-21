@@ -19,8 +19,8 @@ import cn.afterturn.easypoi.excel.entity.enmus.CellValueType;
 import cn.afterturn.easypoi.excel.entity.sax.SaxReadCellEntity;
 import cn.afterturn.easypoi.excel.imports.sax.parse.ISaxRowRead;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.xssf.model.SharedStringsTable;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -41,10 +41,10 @@ import static cn.afterturn.easypoi.excel.entity.sax.SaxConstant.*;
  */
 public class SheetHandler extends DefaultHandler {
 
-    private SharedStringsTable sharedStringsTable;
-    private StylesTable        stylesTable;
-    private String             lastContents;
-    private boolean            lastContentObtained;
+    private SharedStrings sharedStringsTable;
+    private StylesTable stylesTable;
+    private String lastContents;
+    private boolean lastContentObtained;
 
     /**
      * 当前行
@@ -56,13 +56,13 @@ public class SheetHandler extends DefaultHandler {
     private int curCol = 0;
 
     private CellValueType type;
-    private String        currentLocation = "A_", prevLocation;
+    private String currentLocation = "A_", prevLocation;
 
     private ISaxRowRead read;
 
     private List<SaxReadCellEntity> rowList = new ArrayList<>();
 
-    public SheetHandler(SharedStringsTable sharedStringsTable, StylesTable stylesTable, ISaxRowRead rowRead) {
+    public SheetHandler(SharedStrings sharedStringsTable, StylesTable stylesTable, ISaxRowRead rowRead) {
         this.sharedStringsTable = sharedStringsTable;
         this.stylesTable = stylesTable;
         this.read = rowRead;
@@ -71,7 +71,7 @@ public class SheetHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String name,
                              Attributes attributes) throws SAXException {
-        // 置空  
+        // 置空
         lastContents = "";
         lastContentObtained = false;
         if (COL.equals(name)) {
@@ -108,7 +108,7 @@ public class SheetHandler extends DefaultHandler {
                 return;
             }
             try {
-                short  nfId         = (short) stylesTable.getCellXfAt(Integer.parseInt(attributes.getValue(STYLE))).getNumFmtId();
+                short nfId = (short) stylesTable.getCellXfAt(Integer.parseInt(attributes.getValue(STYLE))).getNumFmtId();
                 String numberFormat = stylesTable.getNumberFormats().get(nfId).toUpperCase();
                 if (StringUtils.isNotEmpty(numberFormat)) {
                     if (numberFormat.contains("Y") || numberFormat.contains("M") || numberFormat.contains("D")
@@ -133,8 +133,8 @@ public class SheetHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String name) throws SAXException {
 
-        // 根据SST的索引值的到单元格的真正要存储的字符串  
-        // 这时characters()方法可能会被调用多次  
+        // 根据SST的索引值的到单元格的真正要存储的字符串
+        // 这时characters()方法可能会被调用多次
         if (CellValueType.String.equals(type)) {
             try {
                 int idx = Integer.parseInt(lastContents);
@@ -153,13 +153,13 @@ public class SheetHandler extends DefaultHandler {
             lastContentObtained = true;
             curCol++;
             type = CellValueType.None;
-            // v => 单元格的值，如果单元格是字符串则v标签的值为该字符串在SST中的索引  
-            // 将单元格内容加入rowlist中，在这之前先去掉字符串前后的空白符  
+            // v => 单元格的值，如果单元格是字符串则v标签的值为该字符串在SST中的索引
+            // 将单元格内容加入rowlist中，在这之前先去掉字符串前后的空白符
         } else if (VALUE.equals(name)) {
             String value = lastContents.trim();
             value = "".equals(value) ? " " : value;
             if (CellValueType.Date.equals(type)) {
-                Date date = HSSFDateUtil.getJavaDate(Double.valueOf(value));
+                Date date = DateUtil.getJavaDate(Double.parseDouble(value));
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.Date, date));
                 lastContentObtained = true;
             } else if (CellValueType.Number.equals(type)) {
@@ -187,10 +187,10 @@ public class SheetHandler extends DefaultHandler {
 
     private void addNullCell(String prevLocation, String currentLocation) {
         // 拆分行和列
-        String[] prev    = getRowCell(prevLocation);
+        String[] prev = getRowCell(prevLocation);
         String[] current = getRowCell(currentLocation);
         if (prev[1].equalsIgnoreCase(current[1])) {
-            int prevCell    = getCellNum(prev[0]) + 1;
+            int prevCell = getCellNum(prev[0]) + 1;
             int currentCell = getCellNum(current[0]);
             for (int i = prevCell; i < currentCell; i++) {
                 rowList.add(curCol, new SaxReadCellEntity(CellValueType.String, ""));
@@ -204,7 +204,7 @@ public class SheetHandler extends DefaultHandler {
             return 0;
         }
         char[] chars = cell.toUpperCase().toCharArray();
-        int    n     = 0;
+        int n = 0;
         for (int i = cell.length() - 1, j = 1; i >= 0; i--, j *= 26) {
             char c = (chars[i]);
             if (c < 'A' || c > 'Z') {
@@ -216,9 +216,9 @@ public class SheetHandler extends DefaultHandler {
     }
 
     private String[] getRowCell(String prevLocation) {
-        StringBuilder row   = new StringBuilder();
-        StringBuilder cell  = new StringBuilder();
-        char[]        chars = prevLocation.toCharArray();
+        StringBuilder row = new StringBuilder();
+        StringBuilder cell = new StringBuilder();
+        char[] chars = prevLocation.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             if (chars[i] >= '0' && chars[i] <= '9') {
                 cell.append(chars[i]);
@@ -231,7 +231,7 @@ public class SheetHandler extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        //得到单元格内容的值  
+        //得到单元格内容的值
         lastContents += new String(ch, start, length);
     }
 

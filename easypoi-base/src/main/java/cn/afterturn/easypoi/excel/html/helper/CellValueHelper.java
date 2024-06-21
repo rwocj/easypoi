@@ -1,8 +1,6 @@
 package cn.afterturn.easypoi.excel.html.helper;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.xml.XmlEscapers;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,7 +11,8 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.google.common.xml.XmlEscapers;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Cell值帮助类
@@ -48,7 +47,7 @@ public class CellValueHelper {
      * @param wb
      */
     private void cacheFontInfo(Workbook wb) {
-        for (short i = 0, le = wb.getNumberOfFonts(); i < le; i++) {
+        for (int i = 0, le = wb.getNumberOfFonts(); i < le; i++) {
             Font font = wb.getFontAt(i);
             fontCache.put(font.getBold() + "_" + font.getItalic() + "_" + font.getFontName()
                           + "_" + font.getFontHeightInPoints() + "_" + font.getColor(),

@@ -22,7 +22,7 @@ import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import cn.afterturn.easypoi.handler.inter.IReadHandler;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
-import org.apache.poi.xssf.model.SharedStringsTable;
+import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * 基于SAX Excel大数据读取,读取Excel 07版本,不支持图片读取
@@ -63,7 +62,7 @@ public class SaxReadExcel {
                                   ISaxRowRead rowRead, IReadHandler handler) {
         try {
             XSSFReader         xssfReader         = new XSSFReader(opcPackage);
-            SharedStringsTable sharedStringsTable = xssfReader.getSharedStringsTable();
+            SharedStrings sharedStringsTable = xssfReader.getSharedStringsTable();
             StylesTable        stylesTable        = xssfReader.getStylesTable();
             if (rowRead == null) {
                 rowRead = new SaxRowRead(pojoClass, params, handler);
@@ -91,7 +90,7 @@ public class SaxReadExcel {
         }
     }
 
-    private XMLReader fetchSheetParser(SharedStringsTable sharedStringsTable, StylesTable stylesTable,
+    private XMLReader fetchSheetParser(SharedStrings sharedStringsTable, StylesTable stylesTable,
                                        ISaxRowRead rowRead) throws SAXException {
         XMLReader      parser  = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
         ContentHandler handler = new SheetHandler(sharedStringsTable, stylesTable, rowRead);

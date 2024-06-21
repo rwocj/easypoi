@@ -4,7 +4,7 @@
     <parent>
         <groupId>top.rwocj</groupId>
         <artifactId>easypoi</artifactId>
-        <version>4.4.0</version>
+        <version>4.4.0-jakarta</version>
     </parent>
     <artifactId>easypoi-base</artifactId>
     <dependencies>
@@ -34,11 +34,6 @@
             <optional>true</optional>
         </dependency>
         <!-- read word by sax used -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-scratchpad</artifactId>
@@ -88,8 +83,8 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
         <dependency>
@@ -102,10 +97,5 @@
             <groupId>top.rwocj</groupId>
             <artifactId>easypoi-annotation</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-        </dependency>
-
     </dependencies>
 </project>

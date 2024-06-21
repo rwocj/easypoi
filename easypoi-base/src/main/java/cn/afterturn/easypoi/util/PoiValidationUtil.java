@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -16,6 +16,10 @@
 package cn.afterturn.easypoi.util;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,10 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 /**
  * HIBERNATE 校验工具类

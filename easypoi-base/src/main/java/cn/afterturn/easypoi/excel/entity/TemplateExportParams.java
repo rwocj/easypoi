@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -17,6 +17,7 @@ package cn.afterturn.easypoi.excel.entity;
 
 import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerDefaultImpl;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
@@ -25,12 +26,13 @@ import java.io.InputStream;
 
 /**
  * 模板导出参数设置
- * 
+ *
  * @author JueYue
  *  2013-10-17
  * @version 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TemplateExportParams extends ExcelBaseParams {
 
     /**
@@ -77,7 +79,7 @@ public class TemplateExportParams extends ExcelBaseParams {
      * FOR EACH 用到的局部变量
      */
     private String    tempParams      = "t";
-    
+
     private boolean   colForEach      = false;
     /**
      * 只读

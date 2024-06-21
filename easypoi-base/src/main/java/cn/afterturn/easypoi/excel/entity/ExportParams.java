@@ -18,6 +18,7 @@ package cn.afterturn.easypoi.excel.entity;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerDefaultImpl;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.poi.hssf.util.HSSFColor;
 
 /**
@@ -27,6 +28,7 @@ import org.apache.poi.hssf.util.HSSFColor;
  * @version 1.0 2013年8月24日
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ExportParams extends ExcelBaseParams {
 
     /**

@@ -2,6 +2,7 @@ package cn.afterturn.easypoi.csv.entity;
 
 import cn.afterturn.easypoi.excel.entity.ExcelBaseParams;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * CSV 导入参数
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author by jueyue on 18-10-3.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CsvExportParams extends ExcelBaseParams {
 
     public static final String UTF8 = "utf-8";

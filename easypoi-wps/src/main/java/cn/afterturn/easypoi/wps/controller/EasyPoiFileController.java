@@ -3,13 +3,13 @@ package cn.afterturn.easypoi.wps.controller;
 import cn.afterturn.easypoi.wps.entity.WpsToken;
 import cn.afterturn.easypoi.wps.entity.resreq.*;
 import cn.afterturn.easypoi.wps.service.IEasyPoiWpsViewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;

@@ -112,7 +112,7 @@ public final class PoiPublicUtil {
      */
     public static Field[] getClassFields(Class<?> clazz) {
         List<Field> list = new ArrayList<Field>();
-        Field[]     fields;
+        Field[] fields;
         do {
             fields = clazz.getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
@@ -171,14 +171,14 @@ public final class PoiPublicUtil {
     public static Map<String, PictureData> getSheetPictrues03(HSSFSheet sheet,
                                                               HSSFWorkbook workbook) {
         Map<String, PictureData> sheetIndexPicMap = new HashMap<String, PictureData>();
-        List<HSSFPictureData>    pictures         = workbook.getAllPictures();
+        List<HSSFPictureData> pictures = workbook.getAllPictures();
         if (!pictures.isEmpty()) {
             for (HSSFShape shape : sheet.getDrawingPatriarch().getChildren()) {
                 HSSFClientAnchor anchor = (HSSFClientAnchor) shape.getAnchor();
                 if (shape instanceof HSSFPicture) {
-                    HSSFPicture     pic          = (HSSFPicture) shape;
-                    int             pictureIndex = pic.getPictureIndex() - 1;
-                    HSSFPictureData picData      = pictures.get(pictureIndex);
+                    HSSFPicture pic = (HSSFPicture) shape;
+                    int pictureIndex = pic.getPictureIndex() - 1;
+                    HSSFPictureData picData = pictures.get(pictureIndex);
                     String picIndex = String.valueOf(anchor.getRow1()) + "_"
                             + String.valueOf(anchor.getCol1());
                     sheetIndexPicMap.put(picIndex, picData);
@@ -202,14 +202,14 @@ public final class PoiPublicUtil {
         Map<String, PictureData> sheetIndexPicMap = new HashMap<String, PictureData>();
         for (POIXMLDocumentPart dr : sheet.getRelations()) {
             if (dr instanceof XSSFDrawing) {
-                XSSFDrawing     drawing = (XSSFDrawing) dr;
-                List<XSSFShape> shapes  = drawing.getShapes();
+                XSSFDrawing drawing = (XSSFDrawing) dr;
+                List<XSSFShape> shapes = drawing.getShapes();
                 for (XSSFShape shape : shapes) {
                     if (shape instanceof XSSFPicture) {
-                        XSSFPicture      pic      = (XSSFPicture) shape;
-                        XSSFClientAnchor anchor   = pic.getPreferredSize();
-                        CTMarker         ctMarker = anchor.getFrom();
-                        String           picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
+                        XSSFPicture pic = (XSSFPicture) shape;
+                        XSSFClientAnchor anchor = pic.getPreferredSize();
+                        CTMarker ctMarker = anchor.getFrom();
+                        String picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
                         sheetIndexPicMap.put(picIndex, pic.getPictureData());
                     }
                 }
@@ -235,8 +235,8 @@ public final class PoiPublicUtil {
      * @return
      */
     public static boolean isJavaClass(Field field) {
-        Class<?> fieldType   = field.getType();
-        boolean  isBaseClass = false;
+        Class<?> fieldType = field.getType();
+        boolean isBaseClass = false;
         if (fieldType.isArray()) {
             isBaseClass = false;
         } else if (fieldType.isPrimitive() || fieldType.getPackage() == null
@@ -321,13 +321,13 @@ public final class PoiPublicUtil {
      */
     public static Object[] getIsAndType(ImageEntity entity) throws Exception {
         Object[] result = new Object[2];
-        String   type;
+        String type;
         if (entity.getType().equals(ImageEntity.URL)) {
             result[0] = ImageCache.getImage(entity.getUrl());
         } else {
             result[0] = entity.getData();
         }
-        type = PoiPublicUtil.getFileExtendName((byte[])result[0]);
+        type = PoiPublicUtil.getFileExtendName((byte[]) result[0]);
         result[1] = getImageType(type);
         return result;
     }
@@ -391,14 +391,14 @@ public final class PoiPublicUtil {
         String params = paramsArr[index];
         boolean isGetArrayVal = false;
         int arrayIdx = -1;
-        if(params.indexOf("[") > -1 && params.indexOf("]") > -1){
+        if (params.indexOf("[") > -1 && params.indexOf("]") > -1) {
             isGetArrayVal = true;
             // 获取索引长度
             int startIdx = params.indexOf("[");
             int endIdx = params.indexOf("]");
             String idxStr = params.substring(startIdx + 1, endIdx);
             arrayIdx = Integer.valueOf(idxStr.trim()).intValue();
-            params = params.substring(0,startIdx);
+            params = params.substring(0, startIdx);
         }
         if (object == null) {
             return "";
@@ -412,11 +412,11 @@ public final class PoiPublicUtil {
             object = PoiReflectorUtil.fromCache(object.getClass()).getValue(object,
                     params);
         }
-        if(isGetArrayVal && null != object){
+        if (isGetArrayVal && null != object) {
             // 如果是获取列表中的某一个值，则取值
-            if(object instanceof List){
+            if (object instanceof List) {
                 List list = (List) object;
-                if(arrayIdx < 0 || arrayIdx >= list.size()){
+                if (arrayIdx < 0 || arrayIdx >= list.size()) {
                     object = null;
                 } else {
                     object = ((List) object).get(arrayIdx);
@@ -519,9 +519,9 @@ public final class PoiPublicUtil {
      * @return
      */
     public static String getElStr(String str, String key) {
-        int keyIndex   = str.indexOf(key);
+        int keyIndex = str.indexOf(key);
         int startIndex = (str.substring(0, keyIndex)).lastIndexOf(START_STR);
-        int endIndex   = str.indexOf(END_STR, keyIndex) + 2;
+        int endIndex = str.indexOf(END_STR, keyIndex) + 2;
         return str.substring(startIndex, endIndex);
     }
 
@@ -581,19 +581,8 @@ public final class PoiPublicUtil {
             if (tmpR.getCTR() != null) {
                 if (tmpR.getCTR().isSetRPr()) {
                     CTRPr tmpRPr = tmpR.getCTR().getRPr();
-                    if (tmpRPr.isSetRFonts()) {
-                        CTFonts tmpFonts = tmpRPr.getRFonts();
-                        CTRPr cellRPr = cellR.getCTR().isSetRPr() ? cellR.getCTR().getRPr() : cellR.getCTR().addNewRPr();
-                        CTFonts cellFonts = cellRPr.isSetRFonts() ? cellRPr.getRFonts() : cellRPr.addNewRFonts();
-                        cellFonts.setAscii(tmpFonts.getAscii());
-                        cellFonts.setAsciiTheme(tmpFonts.getAsciiTheme());
-                        cellFonts.setCs(tmpFonts.getCs());
-                        cellFonts.setCstheme(tmpFonts.getCstheme());
-                        cellFonts.setEastAsia(tmpFonts.getEastAsia());
-                        cellFonts.setEastAsiaTheme(tmpFonts.getEastAsiaTheme());
-                        cellFonts.setHAnsi(tmpFonts.getHAnsi());
-                        cellFonts.setHAnsiTheme(tmpFonts.getHAnsiTheme());
-                    }
+                    CTFonts[] rFontsArray = tmpRPr.getRFontsArray();
+                    copyFonts(cellR, rFontsArray);
                 }
             }
         }
@@ -607,16 +596,16 @@ public final class PoiPublicUtil {
         if (tmpP.getBorderBetween() != null) {
             cellP.setBorderBetween(tmpP.getBorderBetween());
         }
-        if (tmpP.getBorderBottom() != null){
+        if (tmpP.getBorderBottom() != null) {
             cellP.setBorderBottom(tmpP.getBorderBottom());
         }
-        if (tmpP.getBorderLeft() != null){
+        if (tmpP.getBorderLeft() != null) {
             cellP.setBorderLeft(tmpP.getBorderLeft());
         }
-        if (tmpP.getBorderRight() != null){
+        if (tmpP.getBorderRight() != null) {
             cellP.setBorderRight(tmpP.getBorderRight());
         }
-        if (tmpP.getBorderTop() != null){
+        if (tmpP.getBorderTop() != null) {
             cellP.setBorderTop(tmpP.getBorderTop());
         }
         cellP.setPageBreak(tmpP.isPageBreak());
@@ -681,6 +670,28 @@ public final class PoiPublicUtil {
                     if (tmpInd.getRightChars() != null) {
                         cellInd.setRightChars(tmpInd.getRightChars());
                     }
+                }
+            }
+        }
+    }
+
+    private static void copyFonts(XWPFRun cellR, CTFonts[] rFontsArray) {
+        if (rFontsArray != null) {
+            for (CTFonts tmpFonts : rFontsArray) {
+                CTRPr cellRPr = cellR.getCTR().isSetRPr() ? cellR.getCTR().getRPr() : cellR.getCTR().addNewRPr();
+                CTFonts[] rFontsArray1 = cellRPr.getRFontsArray();
+                if (rFontsArray1 != null) {
+                    copyFonts(cellR, rFontsArray1);
+                } else {
+                    CTFonts cellFonts = cellRPr.addNewRFonts();
+                    cellFonts.setAscii(tmpFonts.getAscii());
+                    cellFonts.setAsciiTheme(tmpFonts.getAsciiTheme());
+                    cellFonts.setCs(tmpFonts.getCs());
+                    cellFonts.setCstheme(tmpFonts.getCstheme());
+                    cellFonts.setEastAsia(tmpFonts.getEastAsia());
+                    cellFonts.setEastAsiaTheme(tmpFonts.getEastAsiaTheme());
+                    cellFonts.setHAnsi(tmpFonts.getHAnsi());
+                    cellFonts.setHAnsiTheme(tmpFonts.getHAnsiTheme());
                 }
             }
         }

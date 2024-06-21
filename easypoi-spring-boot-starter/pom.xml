@@ -4,22 +4,22 @@
     <parent>
         <groupId>top.rwocj</groupId>
         <artifactId>easypoi</artifactId>
-        <version>4.4.0</version>
+        <version>4.4.0-jakarta</version>
     </parent>
     <artifactId>easypoi-spring-boot-starter</artifactId>
 
     <properties>
-        <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
+        <spring-boot.version>3.0.0</spring-boot.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>top.rwocj</groupId>
             <artifactId>easypoi-web</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>top.rwocj</groupId>
             <artifactId>easypoi-wps</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- Compile dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

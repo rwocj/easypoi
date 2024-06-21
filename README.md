@@ -1,3 +1,4 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/top.rwocj/easypoi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/top.rwocj/easypoi)
 
 EasyPoi Excel和 Word简易工具类
 ===========================
@@ -91,23 +92,23 @@ https://oss.sonatype.org/content/groups/public/
 		 <dependency>
               <groupId>top.rwocj</groupId>
               <artifactId>easypoi-spring-boot-starter</artifactId>
-              <version>4.4.0</version>
+    <version>4.4.0-jakarta</version>
          </dependency>
         <!-- 建议只用start -->
 		 <dependency>
 			<groupId>top.rwocj</groupId>
 			<artifactId>easypoi-base</artifactId>
-			<version>4.4.0</version>
+            <version>4.4.0-jakarta</version>
 		</dependency>
 		<dependency>
 			<groupId>top.rwocj</groupId>
 			<artifactId>easypoi-web</artifactId>
-			<version>4.4.0</version>
+            <version>4.4.0-jakarta</version>
 		</dependency>
 		<dependency>
 			<groupId>top.rwocj</groupId>
 			<artifactId>easypoi-annotation</artifactId>
-			<version>4.4.0</version>
+            <version>4.4.0-jakarta</version>
 		</dependency>
 		
 ```

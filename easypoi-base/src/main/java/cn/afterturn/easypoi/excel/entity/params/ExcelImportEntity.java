@@ -1,6 +1,6 @@
 /**
  * Copyright 2013-2015 JueYue (qrb.jueyue@gmail.com)
- *   
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -16,6 +16,7 @@
 package cn.afterturn.easypoi.excel.entity.params;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
  * @version 1.0 2013年8月24日
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ExcelImportEntity extends ExcelBaseEntity {
 
     public final static String IMG_SAVE_PATH = "/excel/upload/img";

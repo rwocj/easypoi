@@ -17,13 +17,13 @@ package cn.afterturn.easypoi.excel.export.base;
 
 import cn.afterturn.easypoi.entity.BaseTypeConstants;
 import cn.afterturn.easypoi.entity.ImageEntity;
+import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.entity.SpecialSymbolsEntity;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.afterturn.easypoi.entity.PoiBaseConstants;
 import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import cn.afterturn.easypoi.exception.excel.enums.ExcelExportEnum;
 import cn.afterturn.easypoi.handler.inter.ICommentHandler;
@@ -127,7 +127,7 @@ public class ExportCommonService {
         if (value == null) {
             return null;
         }
-        if (!NumberUtils.isNumber(value.toString())) {
+        if (!NumberUtils.isCreatable(value.toString())) {
             LOGGER.error("data want num format ,but is not num, value is:" + value);
             return null;
         }

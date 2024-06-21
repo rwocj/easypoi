@@ -70,7 +70,7 @@ public class StyleHelper {
     }
 
     private void printFonts(Workbook wb) {
-        for (short i = 0, le = wb.getNumberOfFonts(); i < le; i++) {
+        for (int i = 0, le = wb.getNumberOfFonts(); i < le; i++) {
             Font font = wb.getFontAt(i);
             out.format(".%s .%s {%n", DEFAULTS_CLASS, "font_" + i + "_" + cssRandom);
             fontStyle(font);
