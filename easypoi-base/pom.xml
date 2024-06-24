@@ -40,11 +40,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
             <optional>true</optional>
@@ -101,10 +96,6 @@
         <dependency>
             <groupId>top.rwocj</groupId>
             <artifactId>easypoi-annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
         </dependency>
 
     </dependencies>
