@@ -134,9 +134,9 @@ public class ExcelBatchExportService extends ExcelExportService implements IWrit
 
     public Workbook exportBigExcel(IExcelExportServer server, Object queryParams) {
         int page = 1;
-        List<Object> list = server
+        List<?> list = server
                 .selectListForExcelExport(queryParams, page++);
-        while (list != null && list.size() > 0) {
+        while (list != null && !list.isEmpty()) {
             write(list);
             list = server.selectListForExcelExport(queryParams, page++);
         }

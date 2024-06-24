@@ -16,6 +16,6 @@ public interface IExcelExportServer {
      * @param page        当前页数从1开始
      * @return
      */
-    public List<Object> selectListForExcelExport(Object queryParams, int page);
+    List<?> selectListForExcelExport(Object queryParams, int page);
 
 }
