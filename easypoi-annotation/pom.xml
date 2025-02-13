@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>top.rwocj</groupId>
 		<artifactId>easypoi</artifactId>
-        <version>4.4.0-jakarta</version>
+		<version>4.4.1-jakarta</version>
 	</parent>
 	<artifactId>easypoi-annotation</artifactId>
 	<description>base annotation</description>
